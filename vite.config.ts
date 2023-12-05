@@ -18,6 +18,13 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
         "@": resolve(__dirname, "./src")
       }
     },
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: `@import "@/styles/var.scss";` // 在处理每个SCSS 文件时，都会在文件内容的最前面自动添加这一行代码，以导入 var.scss 文件
+        }
+      }
+    },
     server: {
       host: "0.0.0.0",
       port: Number(env.VITE_PORT),

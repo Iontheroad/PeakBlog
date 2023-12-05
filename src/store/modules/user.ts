@@ -9,14 +9,16 @@ interface UserProps {
   access_token: string;
   username: string;
   refresh_token: string;
+  avatar: string;
 }
 
 export const useUserStore = defineStore({
-  id: "peak-user",
+  id: "peak-blog-user",
   state: (): UserProps => ({
-    username: "",
     access_token: "", // 访问令牌
-    refresh_token: "" // 刷新令牌
+    refresh_token: "", // 刷新令牌
+    username: "",
+    avatar: ""
   }),
   actions: {
     setToken({ access_token, username, refresh_token }: UserProps) {

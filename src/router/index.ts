@@ -15,12 +15,24 @@ NProgress.configure({
 const routes: RouteRecordRaw[] = [
   {
     path: "/",
-    name: "Home",
-    alias: "/home",
-    component: () => import("@/views/home/index.vue"),
-    meta: {
-      title: "首页"
-    }
+    redirect: "/home"
+  },
+  {
+    path: "/layout",
+    name: "Layout",
+    component: () => import("@/layout/index.vue"),
+    redirect: "/",
+    children: [
+      {
+        path: "/home",
+        name: "Home",
+        alias: "/home",
+        component: () => import("@/views/home/index.vue"),
+        meta: {
+          title: "首页"
+        }
+      }
+    ]
   },
   {
     path: "/login",

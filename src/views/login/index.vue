@@ -60,7 +60,7 @@
 
 <script setup lang="ts" name="Login">
 import { ElMessage } from "element-plus";
-import { reqUserLogin, reqUserRegister, reqUserResetPassword } from "@/api/user";
+import { reqUserLogin, reqUserRegister } from "@/api/user";
 import { useRouter } from "vue-router";
 import { useUserStore } from "@/store/modules/user";
 import { ref, reactive } from "vue";
