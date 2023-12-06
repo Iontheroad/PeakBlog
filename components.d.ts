@@ -7,7 +7,10 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    CategorySearch: typeof import('./src/components/CategorySearch/index.vue')['default']
+    ElInput: typeof import('element-plus/es')['ElInput']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Tag: typeof import('./src/components/CategorySearch/Tag.vue')['default']
   }
 }
