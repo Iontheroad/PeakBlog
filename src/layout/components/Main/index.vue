@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <main class="main">
     <!-- 视图区域 -->
     <article>
       <router-view></router-view>
@@ -8,7 +8,7 @@
       <!-- 侧边栏 -->
       侧边栏
     </aside>
-  </div>
+  </main>
 </template>
 
 <script lang="ts" setup name="Main"></script>

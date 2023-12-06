@@ -1,5 +1,5 @@
 <template>
-  <div class="category-search">
+  <section class="category-search">
     <div class="search">
       <el-input v-model.trim="search" placeholder="搜索文章" />
     </div>
@@ -13,7 +13,7 @@
         {{ item.label }}
       </span>
     </div>
-  </div>
+  </section>
 </template>
 
 <script lang="ts" setup name="CategorySearch">
