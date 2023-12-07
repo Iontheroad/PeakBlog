@@ -29,9 +29,8 @@ const { isPageScroll } = usePageScroll(); // 页面滚动
 
 const navList = reactive([
   { name: "首页", path: "/home" },
-  { name: "文章", path: "/about" },
-  { name: "留言", path: "/doc" },
   { name: "友链", path: "/links" },
+  { name: "留言", path: "/message" },
   { name: "关于", path: "/login" }
 ]);
 
