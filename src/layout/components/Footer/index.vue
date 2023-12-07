@@ -1,18 +1,22 @@
 <template>
-  <div class="footer">
+  <footer class="footer">
     <a href="https://github.com/Iontheroad" target="_blank">
       2023 © Peak Blog Author: zhang Peak.
     </a>
-  </div>
+  </footer>
 </template>
 
 <script lang="ts" setup name="Footer"></script>
 
 <style scoped lang="scss">
 .footer {
+  position: absolute;
+  bottom: 0;
+  right: 0;
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
   height: 30px;
   background: #ffffff;
   border-top: 1px solid #e4e7ed;

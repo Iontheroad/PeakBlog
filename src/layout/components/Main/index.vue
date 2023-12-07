@@ -17,8 +17,8 @@ import Aside from "@/layout/components/Aside/index.vue";
 .main {
   display: flex;
   max-width: 1400px;
-  width: 100%;
-  margin: 20px auto;
+  margin: 20px auto 0;
+  padding-bottom: 50px;
   article {
     flex: 1;
   }

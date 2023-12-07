@@ -19,6 +19,8 @@ import Footer from "./components/Footer/index.vue";
 
 <style lang="scss" scoped>
 .layout {
+  position: relative;
+  min-height: 100vh;
   background: linear-gradient(144deg, #ada996, #f2f2f2, #dbdbdb, #eaeaea);
 }
 </style>

@@ -95,6 +95,8 @@ let articleList = ref([
     margin-top: 10px;
     row-gap: 20px;
     padding: 20px;
+    transform-style: preserve-3d;
+    perspective: 1000px;
   }
 }
 </style>

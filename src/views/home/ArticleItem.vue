@@ -1,16 +1,19 @@
 <template>
-  <a class="article-item" href="">
+  <a class="article-item" href="javascript:;" @click="toArticleDetails">
     <div class="article-img">
       <img :src="article.img" alt="" />
     </div>
     <div class="article-info">
       <h1>{{ article.title }}</h1>
-      <div class="user">
+      <div class="author-log">
         <div class="avatar">
           <img :src="article.avatar" alt="" />
         </div>
-        <div class="info">
-          <div class="author"><SvgIcon icon-name="author" />{{ article.author }}</div>
+        <div class="log">
+          <div class="author">
+            <SvgIcon icon-name="author" />
+            {{ article.author }}
+          </div>
           <div class="time">
             <span>
               发布于 <SvgIcon icon-name="release-time" />
@@ -50,6 +53,7 @@
 </template>
 
 <script lang="ts" setup name="ArticleItem">
+import { useRouter } from "vue-router";
 import { toRefs } from "vue";
 
 interface Props {
@@ -68,7 +72,14 @@ interface Props {
   };
 }
 const props = defineProps<Props>();
+const router = useRouter();
 const { article } = toRefs(props);
+
+const toArticleDetails = () => {
+  router.push({
+    name: "Article"
+  });
+};
 
 const clickLikes = () => {
   console.log("点赞");
@@ -93,9 +104,13 @@ const clickLikes = () => {
   transition:
     transform 0.3s,
     box-shadow 0.3s;
-  &:hover {
-    transform: translate(5px, -10px);
-    box-shadow: 0 0 30px 1px rgb(0 0 0 / 25%);
+  &:nth-child(odd) {
+    &:hover {
+      // transform: translate(-5px, -10px);
+      transform-origin: right center;
+      transform: translate3d(-5px, 0, 10px) rotateY(1deg);
+      box-shadow: 0 0 30px 1px rgb(0 0 0 / 25%);
+    }
   }
   &:nth-child(even) {
     .article-img {
@@ -103,6 +118,12 @@ const clickLikes = () => {
     }
     .article-info {
       order: 0;
+    }
+    &:hover {
+      // transform: translate(5px, -10px);
+      transform-origin: left center;
+      transform: translate3d(5px, 0, 10px) rotateY(-1deg);
+      box-shadow: 0 0 30px 1px rgb(0 0 0 / 25%);
     }
   }
   .article-img {
@@ -128,11 +149,15 @@ const clickLikes = () => {
       font-size: 28px;
       color: #242628;
     }
-    .user {
+
+    // 作者信息 -->头像、用户名、发布时间、更新时间
+    .author-log {
       display: flex;
       align-items: center;
       font-size: 14px;
       column-gap: 1em;
+
+      // 头像
       .avatar {
         width: 40px;
         height: 40px;
@@ -143,13 +168,15 @@ const clickLikes = () => {
           height: 100%;
         }
       }
-      .info {
+      .log {
         @include flex(column, space-between, flex-start);
         > div {
           @include flex($align: center);
 
           column-gap: 4px;
         }
+
+        // 发布时间、更新时间
         .time {
           align-items: flex-start;
           span {

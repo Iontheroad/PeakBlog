@@ -21,26 +21,26 @@
 </template>
 
 <script lang="ts" setup name="Header">
-import { ref, reactive } from "vue";
+import { reactive, computed } from "vue";
 import { usePageScroll } from "@/hooks/usePageScroll";
-// import { useRouter } from "vue-router";
-// const router = useRouter();
+import { useRouter, useRoute } from "vue-router";
+const router = useRouter();
+const route = useRoute();
 const { isPageScroll } = usePageScroll(); // 页面滚动
 
 const navList = reactive([
   { name: "首页", path: "/home" },
-  { name: "友链", path: "/links" },
-  { name: "留言", path: "/message" },
-  { name: "关于", path: "/login" }
+  { name: "友链", path: "/friend-link" },
+  { name: "留言", path: "/guestbook" },
+  { name: "关于", path: "/about" }
 ]);
 
-let path = ref("/home");
+const path = computed(() => route.path);
 const toPath = (e: any) => {
   e = e || window.event;
   const _path = e.target.getAttribute("path");
   if (!_path) return;
-  path.value = _path;
-  // router.push(_path);
+  router.push(_path);
 };
 </script>
 
