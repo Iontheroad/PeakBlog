@@ -3,14 +3,14 @@
  */
 // import type { AxiosResponse } from "axios";
 import request from "@/utils/request.ts";
-
+const prefix = "/admin";
 /**
  * 用户登录
  * @param data
  */
 export function reqUserLogin(data: { username: string; password: string }) {
   return request({
-    url: "/user/login",
+    url: `${prefix}/user/login`,
     method: "post",
     data
   });
@@ -22,7 +22,7 @@ export function reqUserLogin(data: { username: string; password: string }) {
  */
 export function reqUserLogout() {
   return request({
-    url: "/user/logout",
+    url: `${prefix}/user/logout`,
     method: "post"
   });
 }
@@ -33,7 +33,7 @@ export function reqUserLogout() {
  */
 export function reqUserRegister(data: { username: string; password: string }) {
   return request({
-    url: "/user/register",
+    url: `${prefix}/user/register`,
     method: "post",
     data
   });
@@ -45,7 +45,7 @@ export function reqUserRegister(data: { username: string; password: string }) {
  */
 export function reqUserResetPassword(data: { username: string; password: string }) {
   return request({
-    url: "/user/resetPassword",
+    url: `/user/resetPassword`,
     method: "patch",
     data
   });
@@ -56,8 +56,57 @@ export function reqUserResetPassword(data: { username: string; password: string 
  */
 export function reqRefreshToken(options: any) {
   return request({
-    url: "/refresh/token",
+    url: `/refresh/token`,
     method: "post",
     ...options
+  });
+}
+
+/**
+ * 查询用户列表
+ */
+export function reqSelectUserList(params: { username: string; nickname: string }) {
+  return request({
+    url: `${prefix}/user/list`,
+    method: "get",
+    params
+  });
+}
+
+/**
+ * 查询用户
+ */
+export function reqSelectUser() {
+  return request({
+    url: `${prefix}/user`,
+    method: "get"
+  });
+}
+
+export interface User {
+  user_id?: number;
+  username: string;
+  nickname: string;
+  avatar?: string;
+  sex: string;
+  age: number;
+  address: string;
+  phone: string;
+  email: string;
+  state: 1 | 2; // 1 正常 2 禁用
+  create_time?: string;
+  update_time?: string;
+  login_time?: string;
+}
+export type AddUser = Omit<User, "create_time" | "update_time" | "login_time">;
+
+/**
+ * 修改用户信息
+ */
+export function reqUpdateUser(data: AddUser) {
+  return request({
+    url: `${prefix}/user`,
+    method: "put",
+    data
   });
 }

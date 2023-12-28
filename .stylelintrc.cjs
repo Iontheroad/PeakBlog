@@ -4,11 +4,10 @@ module.exports = {
   root: true,
   // 继承某些已有的规则
   extends: [
-    "stylelint-config-standard", // 提供了一般的 CSS 样式规范\包含了常见的规则，例如缩进、空格、颜色值等。
-    "stylelint-config-standard-scss", // 扩展了 "stylelint-config-standard"，提供了对 SCSS 的支持。 确保在使用SCSS时也保持一致的代码风格。
-    "stylelint-config-html/vue", //针对 HTML 和 Vue 文件的样式规范。 配置用于HTML和Vue文件的规则，以确保这些文件中的样式也符合规范。
-    "stylelint-config-recommended-vue/scss" //  扩展了 "stylelint-config-html/vue"，并提供了在.vue文件中对 SCSS 的支持。 确保在Vue组件和SCSS文件中都遵循了推荐的最佳实践。
-    // "stylelint-config-recess-order" // 配置 stylelint css 属性书写顺序插件, 通过强制规定属性声明的顺序，提高了代码的可读性和一致性。
+    "stylelint-config-standard", // 拓展基础配置，它提供了一般的CSS规则
+    "stylelint-config-standard-scss", // 增加了SCSS特有的规则
+    "stylelint-config-html/vue", // 添加针对Vue文件中HTML样式的规则
+    "stylelint-config-recommended-vue/scss" // 专门针对Vue文件中的SCSS
   ],
   overrides: [
     // 扫描 .vue/html 文件中的 <style> 标签内的样式

@@ -1,27 +1,27 @@
 <template>
   <a class="article-item" href="javascript:;" @click="toArticleDetails">
     <div class="article-img">
-      <img :src="article.img" alt="" />
+      <img :src="article.article_cover" alt="" />
     </div>
     <div class="article-info">
-      <h1>{{ article.title }}</h1>
+      <h1>{{ article.article_title }}</h1>
       <div class="author-log">
         <div class="avatar">
-          <img :src="article.avatar" alt="" />
+          <img :src="article.article_cover" alt="" />
         </div>
         <div class="log">
           <div class="author">
             <SvgIcon icon-name="author" />
-            {{ article.author }}
+            {{ article.create_by }}
           </div>
           <div class="time">
             <span>
               发布于 <SvgIcon icon-name="release-time" />
-              {{ article.release_date }}
+              {{ article.create_time }}
             </span>
             <span>
               更新于 <SvgIcon icon-name="update-time" />
-              {{ article.update_date }}
+              {{ article.update_time }}
             </span>
           </div>
         </div>
@@ -29,10 +29,9 @@
       <div class="category">
         <SvgIcon icon-name="category" />
         <el-tag
-          v-for="tag in article.category"
+          v-for="tag in articleCategory"
           :key="tag"
           type="success"
-          class="mx-1"
           effect="dark"
           size="small"
         >
@@ -53,28 +52,26 @@
 </template>
 
 <script lang="ts" setup name="ArticleItem">
+import type { Article } from "@/api/article";
+import type { Category } from "@/api/category";
 import { useRouter } from "vue-router";
-import { toRefs } from "vue";
+import { toRefs, computed } from "vue";
 
 interface Props {
-  article: {
-    id: number;
-    title: string;
-    img: string;
-    author: string;
-    avatar: string;
-    release_date: string;
-    update_date: string;
-    likes: number;
-    browse: number;
-    comment: string;
-    category: string[];
-  };
+  article: Article.ArticleItem;
+  categoryList: Category[];
 }
 const props = defineProps<Props>();
 const router = useRouter();
 const { article } = toRefs(props);
 
+const articleCategory = computed(() => {
+  let category: number[] = props.article.category_id?.split(",")?.map(Number) || [];
+  return props.categoryList.reduce((prev: string[], cur) => {
+    if (category.includes(cur.cate_id)) prev.push(cur.cate_name);
+    return prev;
+  }, []);
+});
 const toArticleDetails = () => {
   router.push({
     name: "Article"
