@@ -1,6 +1,8 @@
 <template>
   <div class="home">
+    <!-- TODO: 首页兼容移动端 -->
     <!-- 文章区域 -->
+    <!-- TODO: 文章筛选优化 -->
     <CategorySearch />
     <!-- 文章列表 -->
     <section class="article-list">
@@ -10,6 +12,7 @@
         :article="item"
         :category-list="categoryList"
       />
+      <!-- TODO: 封装分页 -->
       <section class="pagination">
         <el-pagination
           :page-size="queryParams.pageSize"

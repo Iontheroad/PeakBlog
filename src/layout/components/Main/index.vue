@@ -2,15 +2,16 @@
   <main class="main">
     <!-- 视图区域 -->
     <article>
+      <!-- TODO: 跳转动画 -->
       <router-view></router-view>
     </article>
     <!-- 侧边栏 -->
-    <Aside />
+    <LayoutAside />
   </main>
 </template>
 
 <script lang="ts" setup name="Main">
-import Aside from "@/layout/components/Aside/index.vue";
+import LayoutAside from "@/layout/components/Aside/index.vue";
 </script>
 
 <style lang="scss" scoped>

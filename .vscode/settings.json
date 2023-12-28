@@ -39,5 +39,6 @@
   },
   "cSpell.words": ["persistedstate", "stylelint"],
   "prettier.configPath": "",
-  "prettier.enable": true
+  "prettier.enable": true,
+  "todo-tree.tree.showBadges": true
 }

@@ -16,11 +16,13 @@
           </div>
           <div class="time">
             <span>
-              发布于 <SvgIcon icon-name="release-time" />
+              发布于
+              <SvgIcon icon-name="release-time" />
               {{ article.create_time }}
             </span>
             <span>
-              更新于 <SvgIcon icon-name="update-time" />
+              更新于
+              <SvgIcon icon-name="update-time" />
               {{ article.update_time }}
             </span>
           </div>
@@ -44,8 +46,10 @@
           <SvgIcon icon-name="like-outlined" />
           {{ article.likes }}
         </span>
-        <span class="browse"><SvgIcon icon-name="browse" />{{ article.browse }}</span>
-        <span class="comment"><SvgIcon icon-name="comment" />{{ article.comment }}</span>
+        <span class="browse"> <SvgIcon icon-name="browse" />{{ article.browse }} </span>
+        <span class="comment">
+          <SvgIcon icon-name="comment" />{{ article.comment }}
+        </span>
       </div>
     </div>
   </a>
@@ -74,7 +78,10 @@ const articleCategory = computed(() => {
 });
 const toArticleDetails = () => {
   router.push({
-    name: "Article"
+    name: "Article",
+    query: {
+      article_id: article.value.article_id
+    }
   });
 };
 
