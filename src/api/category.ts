@@ -8,8 +8,8 @@ const prefix = "/admin";
 export interface Category {
   cate_id: number;
   cate_name: string;
-  create_time: string;
-  update_time: string;
+  create_time?: string;
+  update_time?: string;
 }
 
 /**

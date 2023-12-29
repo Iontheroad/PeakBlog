@@ -1,97 +1,70 @@
 <template>
   <section class="category-search">
     <div class="search">
-      <el-input v-model.trim="search" placeholder="搜索文章" />
+      <el-input v-model.trim="searchKey" placeholder="搜索文章" />
     </div>
     <div class="category" @click="clickCategory">
       <span
-        v-for="item in categoryList"
-        :key="item.value"
-        :data-category="item.value"
-        :class="{ active: categoryChecked.includes(item.value) }"
+        v-for="item in list"
+        :key="item.cate_id"
+        :data-cate_name="item.cate_name"
+        :data-cate_id="item.cate_id"
+        :class="{ active: categoryChecked.includes(item.cate_id) }"
       >
-        {{ item.label }}
+        {{ item.cate_name }}
       </span>
     </div>
   </section>
 </template>
 
-<script lang="ts" setup name="CategorySearch">
-import { ref, Ref } from "vue";
+<script lang="ts" setup>
+import { ref, computed } from "vue";
+import type { Category } from "@/api/category";
+const props = defineProps<{
+  categoryList: Category[];
+}>();
+const emits = defineEmits<{
+  changeCategory: [categoryIds: string | number[], searchKey: string];
+}>();
 
-let search = ref();
-let categoryList: Ref<{ label: string; value: number }[]> = ref([
-  {
-    label: "全部",
-    value: 0
-  },
-  {
-    label: "前端",
-    value: 2
-  },
-  {
-    label: "Vue",
-    value: 3
-  },
-  {
-    label: "JS",
-    value: 4
-  },
-  {
-    label: "TS",
-    value: 5
-  },
-  {
-    label: "NodeJS",
-    value: 6
-  },
-  {
-    label: "Express",
-    value: 7
-  },
-  {
-    label: "MySQL",
-    value: 8
-  },
-  {
-    label: "Git",
-    value: 9
-  },
-  {
-    label: "开发问题",
-    value: 10
-  },
-  {
-    label: "博客",
-    value: 11
-  },
-  {
-    label: "生活",
-    value: 12
-  },
-  {
-    label: "其他",
-    value: 13
-  }
-]);
-let categoryChecked = ref([0]);
+const list = computed(() => {
+  return [
+    {
+      cate_id: "", // 全部的 id设置为 空字符串
+      cate_name: "全部"
+    },
+    ...props.categoryList
+  ];
+});
+
+let searchKey = ref("");
+let categoryChecked = ref<Array<number | string>>([]);
+/**
+ * @description 事件委托=> 点击分类
+ * @param e 事件对象
+ */
 const clickCategory = (e: any) => {
-  const category: number = e?.target?.dataset["category"] * 1;
-  if (!category && category !== 0) return;
+  const cate_name = e?.target?.dataset["cate_name"];
+  if (!cate_name) return;
 
-  if (category === 0) categoryChecked.value = [0]; // 点击全部 固定
-  if (categoryChecked.value.includes(category)) {
-    // 已选
-    categoryChecked.value.splice(categoryChecked.value.indexOf(category), 1); // 去除
-    if (categoryChecked.value.length === 0) categoryChecked.value = [0]; // 一个没选,固定全部
+  let cate_id: number | string = e?.target?.dataset["cate_id"];
+
+  if (cate_id === list.value[0].cate_id)
+    categoryChecked.value = [list.value[0].cate_id]; // 点击全部 固定 [""]
+  else if (categoryChecked.value.includes(Number(cate_id))) {
+    // *已选
+    categoryChecked.value.splice(categoryChecked.value.indexOf(Number(cate_id)), 1); // 去除
+    if (categoryChecked.value.length === 0)
+      categoryChecked.value = [list.value[0].cate_id]; // 全部取消时,固定全部
   } else {
-    // 未选
-    categoryChecked.value.push(category); // 添加
-    if (categoryChecked.value.includes(0))
-      categoryChecked.value.splice(categoryChecked.value.indexOf(0), 1); // 选择了全部以外的,去除全部
+    // *未选
+    categoryChecked.value.push(Number(cate_id)); // 追加分类
+    if (categoryChecked.value.includes(list.value[0].cate_id))
+      categoryChecked.value.splice(0, 1); // 选择了其他分类就把全部去掉
   }
-  console.log(categoryChecked.value);
-  // 请求文章列表
+  // console.log(cate_id, categoryChecked.value.join(","), categoryChecked.value);
+
+  emits("changeCategory", categoryChecked.value.join(","), searchKey.value);
 };
 </script>
 

@@ -3,7 +3,7 @@
     <!-- TODO: 首页兼容移动端 -->
     <!-- 文章区域 -->
     <!-- TODO: 文章筛选优化 -->
-    <CategorySearch />
+    <CategorySearch :category-list="categoryList" @change-category="changeCategory" />
     <!-- 文章列表 -->
     <section class="article-list">
       <ArticleItem
@@ -12,14 +12,12 @@
         :article="item"
         :category-list="categoryList"
       />
-      <!-- TODO: 封装分页 -->
       <section class="pagination">
-        <el-pagination
-          :page-size="queryParams.pageSize"
-          v-model:current-page="queryParams.currentPage"
-          :pager-count="11"
-          layout="prev, pager, next"
+        <Pagination
           :total="total"
+          v-model:current-page="queryParams.currentPage"
+          v-model:page-size="queryParams.pageSize"
+          @change="selectArticleList"
         />
       </section>
     </section>
@@ -27,11 +25,12 @@
 </template>
 
 <script lang="ts" setup name="Home">
+import { ref, onMounted } from "vue";
 import { reqSelectArticleList, type Article } from "@/api/article.ts";
 import { reqSelectCategory } from "@/api/category";
 import CategorySearch from "./CategorySearch.vue";
 import ArticleItem from "./ArticleItem.vue";
-import { ref, onMounted } from "vue";
+import Pagination from "@/components/Pagination/index.vue";
 
 let total = ref(0);
 let queryParams = ref<Article.ReqSelectArticleList>({
@@ -62,11 +61,16 @@ const categoryList = ref([]);
 async function selectCategoryList() {
   try {
     let result = await reqSelectCategory();
+    // result.data.unshift({ cate_id: 0, cate_name: "全部" });
     categoryList.value = result.data;
   } catch (error) {
     console.log(error);
   }
 }
+
+const changeCategory = (categoryIds: string | number[], searchKey: string) => {
+  console.log(categoryIds, searchKey);
+};
 </script>
 
 <style lang="scss" scoped>
