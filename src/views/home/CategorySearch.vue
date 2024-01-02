@@ -18,13 +18,13 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from "vue";
+import { ref, computed, watch, toRaw } from "vue";
 import type { Category } from "@/api/category";
 const props = defineProps<{
   categoryList: Category[];
 }>();
 const emits = defineEmits<{
-  changeCategory: [categoryIds: string | number[], searchKey: string];
+  changeCategory: [categoryIds: (string | number)[], searchKey: string];
 }>();
 
 const list = computed(() => {
@@ -38,7 +38,10 @@ const list = computed(() => {
 });
 
 let searchKey = ref("");
-let categoryChecked = ref<Array<number | string>>([]);
+let categoryChecked = ref<Array<string | number>>([]);
+watch(searchKey, () => {
+  emits("changeCategory", categoryChecked.value, searchKey.value);
+});
 /**
  * @description 事件委托=> 点击分类
  * @param e 事件对象
@@ -62,9 +65,8 @@ const clickCategory = (e: any) => {
     if (categoryChecked.value.includes(list.value[0].cate_id))
       categoryChecked.value.splice(0, 1); // 选择了其他分类就把全部去掉
   }
-  // console.log(cate_id, categoryChecked.value.join(","), categoryChecked.value);
 
-  emits("changeCategory", categoryChecked.value.join(","), searchKey.value);
+  emits("changeCategory", toRaw(categoryChecked.value), searchKey.value);
 };
 </script>
 

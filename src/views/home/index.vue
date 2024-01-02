@@ -2,7 +2,6 @@
   <div class="home">
     <!-- TODO: 首页兼容移动端 -->
     <!-- 文章区域 -->
-    <!-- TODO: 文章筛选优化 -->
     <CategorySearch :category-list="categoryList" @change-category="changeCategory" />
     <!-- 文章列表 -->
     <section class="article-list">
@@ -36,7 +35,9 @@ let total = ref(0);
 let queryParams = ref<Article.ReqSelectArticleList>({
   currentPage: 1,
   pageSize: 10,
-  status: 2
+  category_ids: [],
+  status: 2,
+  searchKey: ""
 });
 
 onMounted(() => {
@@ -61,15 +62,22 @@ const categoryList = ref([]);
 async function selectCategoryList() {
   try {
     let result = await reqSelectCategory();
-    // result.data.unshift({ cate_id: 0, cate_name: "全部" });
     categoryList.value = result.data;
   } catch (error) {
     console.log(error);
   }
 }
 
-const changeCategory = (categoryIds: string | number[], searchKey: string) => {
+/**
+ * @description 文章分类 和 搜索框变动触发
+ * @param categoryIds
+ * @param searchKey
+ */
+const changeCategory = (categoryIds: (string | number)[], searchKey: string) => {
   console.log(categoryIds, searchKey);
+  queryParams.value.searchKey = searchKey;
+  queryParams.value.category_ids = categoryIds;
+  selectArticleList();
 };
 </script>
 

@@ -33,6 +33,8 @@ export namespace Article {
   // 获取文章列表 参数
   export interface ReqSelectArticleList extends ReqPage {
     status: 2; // 只能展示已通过的
+    searchKey: string;
+    category_ids?: Array<number | string>;
   }
 }
 
