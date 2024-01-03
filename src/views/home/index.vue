@@ -5,12 +5,7 @@
     <CategorySearch :category-list="categoryList" @change-category="changeCategory" />
     <!-- 文章列表 -->
     <section class="article-list">
-      <ArticleItem
-        v-for="item in articleList"
-        :key="item.article_id"
-        :article="item"
-        :category-list="categoryList"
-      />
+      <ArticleItem v-for="item in articleList" :key="item.article_id" :article="item" />
       <section class="pagination">
         <Pagination
           :total="total"
@@ -35,8 +30,8 @@ let total = ref(0);
 let queryParams = ref<Article.ReqSelectArticleList>({
   currentPage: 1,
   pageSize: 10,
-  category_ids: [],
-  status: 2,
+  category_ids: "", // 不传 或者 空字符串就是 获取全部分类
+  status: 2, // 1: 未通过 2: 通过 3: 待审核  用户端只能获取通过的
   searchKey: ""
 });
 
@@ -74,9 +69,8 @@ async function selectCategoryList() {
  * @param searchKey
  */
 const changeCategory = (categoryIds: (string | number)[], searchKey: string) => {
-  console.log(categoryIds, searchKey);
   queryParams.value.searchKey = searchKey;
-  queryParams.value.category_ids = categoryIds;
+  queryParams.value.category_ids = categoryIds.join(",");
   selectArticleList();
 };
 </script>

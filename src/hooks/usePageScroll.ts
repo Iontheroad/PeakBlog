@@ -3,11 +3,13 @@
  */
 import { onMounted, onUnmounted, ref } from "vue";
 
-export function usePageScroll() {
+export function usePageScroll(dom = document.documentElement) {
+  let scrollTop = ref(0); // 滚动条距离顶部的距离
   let isPageScroll = ref(true); // 是否固定头部
-
   function handleScroll() {
-    if (window.scrollY > 0) {
+    scrollTop.value = dom.scrollTop;
+
+    if (scrollTop.value > 0) {
       isPageScroll.value = true;
     } else {
       isPageScroll.value = false;
@@ -19,8 +21,6 @@ export function usePageScroll() {
   onUnmounted(() => {
     window.removeEventListener("scroll", handleScroll);
   });
-
-  return {
-    isPageScroll
-  };
+  handleScroll();
+  return { scrollTop, isPageScroll };
 }

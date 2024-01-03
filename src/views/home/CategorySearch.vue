@@ -75,14 +75,16 @@ const clickCategory = (e: any) => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px 60px;
+  padding: 20px;
   border-radius: 10px;
   background-color: #ffffff;
+  .search {
+    margin-bottom: 1em;
+  }
   .category {
     display: flex;
     flex-wrap: wrap;
     row-gap: 10px;
-    margin-top: 1em;
     span {
       margin: 0 10px;
       padding: 4px 10px;
@@ -91,7 +93,8 @@ const clickCategory = (e: any) => {
       cursor: pointer;
       font-size: 14px;
       &.active {
-        background-color: #d4dde1;
+        // background-color: #d4dde1;
+        background-color: #4fc7fb;
       }
     }
   }

@@ -24,6 +24,7 @@ export namespace Article {
     update_id: number;
     update_time: string;
 
+    article_cateList?: { cate_id: number; cate_name: string }[];
     // 点赞、浏览、评论 暂时没有
     likes: number;
     browse: number;
@@ -34,7 +35,7 @@ export namespace Article {
   export interface ReqSelectArticleList extends ReqPage {
     status: 2; // 只能展示已通过的
     searchKey: string;
-    category_ids?: Array<number | string>;
+    category_ids?: string;
   }
 }
 

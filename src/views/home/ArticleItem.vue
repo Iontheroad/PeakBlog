@@ -31,13 +31,13 @@
       <div class="category">
         <SvgIcon icon-name="category" />
         <el-tag
-          v-for="tag in articleCategory"
-          :key="tag"
+          v-for="cate in article.article_cateList"
+          :key="cate.cate_id"
           type="success"
           effect="dark"
           size="small"
         >
-          {{ tag }}
+          {{ cate.cate_name }}
         </el-tag>
       </div>
       <div class="data">
@@ -57,25 +57,16 @@
 
 <script lang="ts" setup name="ArticleItem">
 import type { Article } from "@/api/article";
-import type { Category } from "@/api/category";
 import { useRouter } from "vue-router";
-import { toRefs, computed } from "vue";
+import { toRefs } from "vue";
 
 interface Props {
   article: Article.ArticleItem;
-  categoryList: Category[];
 }
 const props = defineProps<Props>();
 const router = useRouter();
 const { article } = toRefs(props);
 
-const articleCategory = computed(() => {
-  let category: number[] = props.article.category_id?.split(",")?.map(Number) || [];
-  return props.categoryList.reduce((prev: string[], cur) => {
-    if (category.includes(cur.cate_id)) prev.push(cur.cate_name);
-    return prev;
-  }, []);
-});
 const toArticleDetails = () => {
   router.push({
     name: "Article",
