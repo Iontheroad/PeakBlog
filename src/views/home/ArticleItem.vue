@@ -136,7 +136,7 @@ const clickLikes = () => {
     @include flex(column, center, flex-start);
 
     row-gap: 1em;
-    padding: 0 20px;
+    padding: 20px;
     color: #8a96a9;
     h1 {
       font-size: 28px;
@@ -204,7 +204,6 @@ const clickLikes = () => {
   }
 }
 
-// TODO: 响应式处理
 @media screen and (width <= 768px) {
   .article-item {
     flex-direction: column;
@@ -214,8 +213,6 @@ const clickLikes = () => {
       height: 170px;
     }
     .article-info {
-      row-gap: 0.5em;
-      padding: 10px;
       h1 {
         font-size: 20px;
       }

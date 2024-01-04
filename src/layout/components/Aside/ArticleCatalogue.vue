@@ -25,7 +25,6 @@ mittBus.on("getCatalogue", (obj: any) => {
 
 <style lang="scss" scoped>
 .article-catalogue {
-  position: fixed;
   background-color: #ffffff;
   padding: 20px;
   border-radius: 10px;
