@@ -1,5 +1,5 @@
 <template>
-  <a class="article-item" href="javascript:;" @click="toArticleDetails">
+  <router-link class="article-item" :to="to">
     <div class="article-img">
       <img :src="article.article_cover" alt="" />
     </div>
@@ -52,28 +52,24 @@
         </span>
       </div>
     </div>
-  </a>
+  </router-link>
 </template>
 
 <script lang="ts" setup name="ArticleItem">
 import type { Article } from "@/api/article";
-import { useRouter } from "vue-router";
 import { toRefs } from "vue";
 
 interface Props {
   article: Article.ArticleItem;
 }
 const props = defineProps<Props>();
-const router = useRouter();
 const { article } = toRefs(props);
 
-const toArticleDetails = () => {
-  router.push({
-    name: "Article",
-    query: {
-      article_id: article.value.article_id
-    }
-  });
+const to = {
+  name: "Article",
+  query: {
+    article_id: article.value.article_id
+  }
 };
 
 const clickLikes = () => {
@@ -93,6 +89,8 @@ const clickLikes = () => {
   justify-content: space-between;
   border-radius: $border-radius;
   width: 100%;
+
+  // height: 240px;
   overflow: hidden;
   text-decoration: none;
   color: black;
@@ -201,6 +199,28 @@ const clickLikes = () => {
 
         font-size: 12px;
         column-gap: 2px;
+      }
+    }
+  }
+}
+
+// TODO: 响应式处理
+@media screen and (width <= 768px) {
+  .article-item {
+    flex-direction: column;
+    background-color: #ffffff;
+    .article-img {
+      width: 100%;
+      height: 170px;
+    }
+    .article-info {
+      row-gap: 0.5em;
+      padding: 10px;
+      h1 {
+        font-size: 20px;
+      }
+      .time {
+        flex-wrap: wrap;
       }
     }
   }

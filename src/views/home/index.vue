@@ -89,5 +89,15 @@ const changeCategory = (categoryIds: (string | number)[], searchKey: string) => 
     transform-style: preserve-3d;
     perspective: 1000px;
   }
+
+  @media screen and (width <= 768px) {
+    width: 95%;
+    margin: 0 auto;
+    .article-list {
+      padding: 0;
+      margin-top: 20px;
+      background-color: transparent;
+    }
+  }
 }
 </style>

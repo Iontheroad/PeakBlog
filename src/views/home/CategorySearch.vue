@@ -38,7 +38,7 @@ const list = computed(() => {
 });
 
 let searchKey = ref("");
-let categoryChecked = ref<Array<string | number>>([]);
+let categoryChecked = ref<Array<string | number>>([""]);
 watch(searchKey, () => {
   emits("changeCategory", categoryChecked.value, searchKey.value);
 });

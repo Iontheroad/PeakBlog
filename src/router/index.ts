@@ -33,6 +33,14 @@ const routes: RouteRecordRaw[] = [
         }
       },
       {
+        path: "/article/details",
+        name: "Article",
+        component: () => import("@/views/article/index.vue"),
+        meta: {
+          title: "文章"
+        }
+      },
+      {
         path: "/friend-link",
         name: "FriendLink",
         component: () => import("@/views/friend-link/index.vue"),
@@ -54,14 +62,6 @@ const routes: RouteRecordRaw[] = [
         component: () => import("@/views/about/index.vue"),
         meta: {
           title: "关于"
-        }
-      },
-      {
-        path: "/article/details",
-        name: "Article",
-        component: () => import("@/views/article/index.vue"),
-        meta: {
-          title: "留言板"
         }
       }
     ]
