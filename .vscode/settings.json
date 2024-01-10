@@ -37,7 +37,7 @@
   "[less]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "cSpell.words": ["persistedstate", "stylelint"],
+  "cSpell.words": ["blogroll", "persistedstate", "stylelint"],
   "prettier.configPath": "",
   "prettier.enable": true,
   "todo-tree.tree.showBadges": true
