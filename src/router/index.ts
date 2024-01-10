@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import NProgress from "nprogress"; // 进度条
 import "nprogress/nprogress.css"; // 进度条样式
-import { useUserStore } from "@/store/modules/user";
+// import { useUserStore } from "@/store/modules/user";
 
 // 进度条配置
 NProgress.configure({
@@ -41,9 +41,9 @@ const routes: RouteRecordRaw[] = [
         }
       },
       {
-        path: "/friend-link",
-        name: "FriendLink",
-        component: () => import("@/views/friend-link/index.vue"),
+        path: "/blogroll",
+        name: "Blogroll",
+        component: () => import("@/views/blogroll/index.vue"),
         meta: {
           title: "友链"
         }
@@ -77,7 +77,7 @@ const router = createRouter({
   routes
 });
 
-const ROUTE_WHITE_LIST = ["/", "/home", "/500"]; // 白名单
+// const ROUTE_WHITE_LIST = ["/", "/home", "/500"]; // 白名单
 
 /**
  * @description 路由拦截，登录拦截

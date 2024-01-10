@@ -22,6 +22,7 @@ import LayoutAside from "@/layout/components/Aside/index.vue";
   padding-bottom: 50px;
   > article {
     flex: 1;
+    width: 100%;
   }
 }
 
