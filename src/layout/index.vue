@@ -21,6 +21,8 @@ import Footer from "./components/Footer/index.vue";
 .layout {
   position: relative;
   min-height: 100vh;
-  background: linear-gradient(144deg, #ada996, #f2f2f2, #dbdbdb, #eaeaea);
+
+  // background: linear-gradient(144deg, #ada996, #f2f2f2, #dbdbdb, #eaeaea);
+  background-color: #f9f9f9;
 }
 </style>

@@ -37,7 +37,7 @@ let links = [
     site_url: "https://www.mi.com",
     site_icon: "https://www.mi.com/favicon.ico",
     email: "mi@qq.com",
-    description: "小米之家",
+    description: "小米之家请问呜呜呜呜呜呜呜呜呜哇哇哇哇哇哇哇哇哇哇哇哇哇哇哇哇哇哇娃娃",
     is_action: 1, // 1:正常 0:禁用
     create_time: "2022-12-12 12:12:12",
     update_time: "2022-12-12 12:12:12"
@@ -47,7 +47,7 @@ let links = [
 
 <style lang="scss" scoped>
 .blogroll {
-  width: 70%;
+  width: 90%;
   margin: 20px auto;
   ul {
     display: flex;
@@ -61,19 +61,57 @@ let links = [
       background-size: 100% 100%;
       border-radius: 10px;
       padding: 20px;
-      transition: all 0.3s;
+      border: 1px solid #e5e6e6;
+      transition: all 0.6s;
+      box-shadow: 0 0 14px 2px rgb(0 0 0 / 10%);
       &:hover {
-        transform: scale(1.05);
-        box-shadow: 0 0 15px 5px rgb(0 0 0 / 10%);
+        transform: scale(1.03);
       }
     }
     a {
       display: flex;
       align-items: center;
+      text-decoration: none;
+      column-gap: 10px;
+      img {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+      }
+      .info {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        row-gap: 5px;
+        color: black;
+        h2 {
+          font-size: 20px;
+        }
+        p {
+          color: #4b4848;
+
+          /* 设置溢出隐藏 */
+          overflow: hidden;
+
+          /* 文本溢出显示省略号 */
+          text-overflow: ellipsis;
+
+          /* 将盒子设置为弹性伸缩盒子 */
+          display: -webkit-box;
+
+          /* 设置显示的行数 */
+          -webkit-line-clamp: 2;
+
+          /* 在其中的排列方式为垂直的 */
+          -webkit-box-orient: vertical;
+        }
+      }
     }
-    a img {
-      width: 64px;
-      height: 64px;
+  }
+
+  @media screen and (width <= 768px) {
+    ul li {
+      width: 100%;
     }
   }
 }

@@ -1,4 +1,5 @@
 <template>
+  <!-- TODO: 侧边栏后期移入每个页面中 ,不在放入全局-->
   <!-- 侧边栏 -->
   <!-- aside: 用于撑起侧边栏,当box fixed时用于占位 -->
   <aside>
@@ -6,6 +7,9 @@
     <div class="box" :class="{ 'fixed-aside': isFixed }">
       <BoxUser v-if="path.startsWith('/home')" />
       <ArticleCatalogue v-if="path.startsWith('/article')" />
+      <div class="blogroll" v-if="path.startsWith('/blogroll')">
+        <button>添加</button>
+      </div>
     </div>
   </aside>
 </template>
