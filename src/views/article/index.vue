@@ -7,10 +7,14 @@
     />
     <!-- <MdCatalog editor-id="article-details" :scroll-element="scrollElement" /> -->
   </div>
+
+  <!-- 评论区 -->
+  <CommentsSection />
 </template>
 
 <script setup lang="ts">
 defineOptions({ name: "ArticleView" });
+import CommentsSection from "@/components/CommentsSection/index.vue";
 import { onMounted, computed, ref } from "vue";
 import { useRoute } from "vue-router";
 import { MdPreview } from "md-editor-v3";
