@@ -13,6 +13,10 @@
 </template>
 
 <script setup lang="ts">
+/*
+评论和点赞单独建表
+浏览量在文章表添加一个字段
+*/
 defineOptions({ name: "ArticleView" });
 import CommentsSection from "@/components/CommentsSection/index.vue";
 import { onMounted, computed, ref } from "vue";

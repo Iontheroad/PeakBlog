@@ -46,10 +46,6 @@
               <div class="user-popover">{{ item.userName }}</div>
               <div class="time">{{ item.createTime }}</div>
             </div>
-            <!-- 一级评论内容 -->
-            <!-- <div class="content">{{ item.info }}</div>
-            <div class="limit-btn">展开</div>
-            <div class="limit-btn">收起</div> -->
             <CommentContent :content="item.info" :label-id="'peak' + item.id" />
             <!-- 点赞 | 回复 -->
             <div class="action-box">
@@ -150,7 +146,37 @@ const id = computed(() => {
 onMounted(() => {
   getComment(); //获取评论
 });
-
+/* 
+[
+    {
+        "id": 531,
+        "article_id": 1,
+        "user_id": 8,
+        "nickname": "hhhh",
+        "is_liked": false,
+        "avatar": "http://119.91.22.164:8085/OASystem/gaoding-koutu.png",
+        "create_time": "2023-05-13 18:26:43",
+        "content": "那个夜晚，月亮如同一颗钻石悬挂在天空中，星星闪烁着让人心醉的光芒，而我却独自一人站在海滩上，感受着海风的轻拂和海浪的拍打，仿佛整个世界都变得安静而美好。",
+        "children": [
+            {
+                "id": 534,
+                "article_id": 1,
+                "is_liked": false,
+                "user_id": 8,
+                "nickname": "hh",
+                "avatar": "http://119.91.22.164:8085/OASystem/gaoding-koutu.png",
+                "create_time": "2023-05-13 18:26:51",
+                "content": "雨水滴落在屋檐上，发出清脆的声响，仿佛是上天派来的音乐，让人沉醉其中。我静静地坐在窗前，看着窗外的雨滴，想着那些曾经的美好时光，仿佛又回到了那个温馨的时刻。",
+                "parent_id": "531",
+                "reply_id": "531",
+                "reply_user_id": 8,
+                "reply_nickname": "hh",
+                "reply_avatar":"http://119.91.22.164:8085/OASystem/gaoding-koutu.png"
+            }
+        ]
+    }
+]
+*/
 /**
  * 获取评论
  */
@@ -158,10 +184,12 @@ function getComment() {
   commentList.value = [
     {
       topId: 1, // 所属文章评论区的id
+      articleId: 1, // 所属文章的id
       attachmentUrl: "[]", // 图片集合
       num: 1, // 评论数量，只有一级有，二级都是0
       userName: "多可悲", // 评论用户的姓名
       userId: 8, // 评论用户的id
+      userUrl: "http://119.91.22.164:8085/OASystem/gaoding-koutu.png",
       url: "http://119.91.22.164:8085/OASystem/gaoding-koutu.png", //  评论用户的头像
       createTime: "2023-05-13 18:26:43", // 评论时间
       praiseType: 0, // 当前登录的用户是否对该条评论点赞
