@@ -6,9 +6,14 @@
       @on-get-catalog="onGetCatalog"
     />
     <!-- <MdCatalog editor-id="article-details" :scroll-element="scrollElement" /> -->
+
+    <CommentsSection />
   </div>
 
-  <CommentsSection />
+  <!-- 侧边栏 -->
+  <LayoutAside>
+    <ArticleCatalogue />
+  </LayoutAside>
 </template>
 
 <script setup lang="ts">
@@ -17,6 +22,8 @@
 浏览量在文章表添加一个字段
 */
 defineOptions({ name: "ArticleView" });
+import LayoutAside from "@/layout/components/Aside/index.vue";
+import ArticleCatalogue from "@/layout/components/Aside/ArticleCatalogue.vue";
 import CommentsSection from "@/components/CommentsSection/index.vue";
 import { onMounted, computed, ref } from "vue";
 import { useRoute } from "vue-router";
@@ -50,6 +57,7 @@ const onGetCatalog = (list: []) => {
 </script>
 <style lang="scss" scoped>
 .article-container {
+  flex: 1;
   padding: 20px;
   border-radius: 10px;
   background-color: #ffffff;

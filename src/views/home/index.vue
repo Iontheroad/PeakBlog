@@ -1,6 +1,5 @@
 <template>
   <div class="home">
-    <!-- TODO: 首页兼容移动端 -->
     <!-- 文章区域 -->
     <CategorySearch :category-list="categoryList" @change-category="changeCategory" />
     <!-- 文章列表 -->
@@ -16,12 +15,19 @@
       </section>
     </section>
   </div>
+
+  <!-- 侧边栏 -->
+  <LayoutAside>
+    <BoxUser />
+  </LayoutAside>
 </template>
 
 <script lang="ts" setup name="Home">
 import { ref, onMounted } from "vue";
 import { reqSelectArticleList, type Article } from "@/api/article.ts";
 import { reqSelectCategory } from "@/api/category";
+import LayoutAside from "@/layout/components/Aside/index.vue";
+import BoxUser from "@/layout/components/Aside/BoxUser.vue";
 import CategorySearch from "./CategorySearch.vue";
 import ArticleItem from "./ArticleItem.vue";
 import Pagination from "@/components/Pagination/index.vue";
@@ -77,6 +83,7 @@ const changeCategory = (categoryIds: (string | number)[], searchKey: string) => 
 
 <style lang="scss" scoped>
 .home {
+  flex: 1;
   .article-list {
     display: flex;
     flex-direction: column;

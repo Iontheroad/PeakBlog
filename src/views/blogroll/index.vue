@@ -12,12 +12,20 @@
       </li>
     </ul>
   </div>
+
+  <!-- 侧边栏 -->
+  <LayoutAside>
+    <div class="blogroll">
+      <button>添加</button>
+    </div>
+  </LayoutAside>
 </template>
 
 <script lang="ts" setup>
 defineOptions({
   name: "Blogroll"
 });
+import LayoutAside from "@/layout/components/Aside/index.vue";
 
 let links = [
   {
@@ -47,7 +55,7 @@ let links = [
 
 <style lang="scss" scoped>
 .blogroll {
-  width: 90%;
+  flex: 1;
   margin: 20px auto;
   ul {
     display: flex;
