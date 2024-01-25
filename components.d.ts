@@ -7,10 +7,12 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    CommentBox: typeof import('./src/components/CommentsSection/CommentBox.vue')['default']
     CommentContent: typeof import('./src/components/CommentsSection/CommentContent.vue')['default']
     CommentInput: typeof import('./src/components/CommentsSection/CommentInput.vue')['default']
     Comments: typeof import('./src/components/Comments/index.vue')['default']
     CommentsSection: typeof import('./src/components/CommentsSection/index.vue')['default']
+    copy: typeof import('./src/components/CommentsSection/CommentInput copy.vue')['default']
     ElAlert: typeof import('element-plus/es')['ElAlert']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElDivider: typeof import('element-plus/es')['ElDivider']

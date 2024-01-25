@@ -1,5 +1,5 @@
 <template>
-  <div class="form-box">
+  <div class="comment-box">
     <div class="input-box focused">
       <!-- 输入区域 -->
       <div
@@ -30,7 +30,7 @@
   </div>
 </template>
 
-<script lang="ts" setup name="CommentInput">
+<script lang="ts" setup name="CommentBox">
 /**
  * 发表评论
  */
@@ -38,7 +38,7 @@ const postComment = () => {};
 </script>
 
 <style lang="scss" scoped>
-.form-box {
+.comment-box {
   .action-box {
     display: flex;
     align-items: center;

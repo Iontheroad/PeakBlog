@@ -6,24 +6,7 @@
         <!-- <div class="avatar-box">
           <img :src="url" alt="" class="" loading="lazy" />
         </div> -->
-        <div class="form-box">
-          <CommentInput />
-          <!-- 操作 -->
-          <div class="action-box">
-            <div class="emoji-btn">
-              <svg-icon icon-name="func-forum-sanuk"></svg-icon>
-              <span>表情</span>
-            </div>
-            <div class="image-btn">
-              <svg-icon icon-name="func-forum-img"></svg-icon>
-              <span>图片</span>
-            </div>
-            <div class="submit">
-              <span>Ctrl + Enter</span>
-              <button class="submit-btn" @click="postComment">发表评论</button>
-            </div>
-          </div>
-        </div>
+        <CommentBox @post-comment="postComment" />
       </div>
     </div>
 
@@ -50,11 +33,11 @@
             <!-- 点赞 | 回复 -->
             <div class="action-box">
               <div class="item" :class="{ active: item.praiseType }">
-                <svg-icon icon-name="func-forum-like" />
+                <svg-icon icon-name="like-outlined" />
                 {{ item.num ? item.num : "点赞" }}
               </div>
               <div class="item">
-                <svg-icon icon-name="func-forum-comment" />
+                <svg-icon icon-name="comment" />
                 {{ item.children.length ? item.children.length : "回复" }}
               </div>
               <!-- 删除按钮, 本人才显示 -->
@@ -62,6 +45,9 @@
                 删除
               </div>
             </div>
+
+            <!-- 评论框 -->
+            <CommentBox />
           </div>
           <!-- 这沿途的风景或许不是那么精彩,但当我们回首往昔时,便是峥嵘岁月! -->
           <!-- 一级下的二级评论容器 -->
@@ -93,12 +79,10 @@
                     <!-- 点赞 , 回复 -->
                     <div class="action-box">
                       <div class="item" :class="{ active: child.praiseType }">
-                        <svg-icon icon-name="func-forum-like" />
+                        <svg-icon icon-name="like-outlined" />
                         {{ child.num ? child.num : "点赞" }}
                       </div>
-                      <div class="item">
-                        <svg-icon icon-name="func-forum-comment" />回复
-                      </div>
+                      <div class="item"><svg-icon icon-name="comment" />回复</div>
                       <!-- 删除按钮, 本人才显示 -->
                       <div
                         class="sub-del"
@@ -122,7 +106,7 @@
 
 <!--https://blog.csdn.net/zLanaDelRey/article/details/100997792-->
 <script setup lang="ts">
-/* 
+/*
 // 封装输入框
 IDEA: 
   1. 每个评论都是控制一个独有的输入框
@@ -131,7 +115,7 @@ IDEA:
 defineOptions({
   name: "Forum"
 });
-import CommentInput from "./CommentInput.vue";
+import CommentBox from "./CommentBox.vue";
 import CommentContent from "./CommentContent.vue";
 import { ref, computed, onMounted } from "vue";
 let commentList = ref<any>([]); // 评论列表
@@ -325,56 +309,8 @@ const deleteComment = (id: number) => {
 <style lang="scss" scoped>
 // 讨论区
 .forum-container {
-  flex: 1;
   background-color: #ffffff;
   padding: 30px;
-  .form-box {
-    .action-box {
-      display: flex;
-      align-items: center;
-      margin-top: 8px;
-      .emoji-btn,
-      .image-btn {
-        display: flex;
-        align-items: center;
-        position: relative;
-        cursor: pointer;
-        color: #515767;
-        .svg-icon {
-          margin-right: 4px;
-        }
-        span {
-          font-size: 12px;
-        }
-      }
-      .image-btn {
-        margin-left: 24px;
-      }
-      .submit {
-        margin-left: auto;
-        span {
-          font-size: 14px;
-          line-height: 22px;
-          letter-spacing: 0.2px;
-          color: #8a919f;
-          margin-right: 16px;
-        }
-        button {
-          margin-left: auto;
-          width: 92px;
-          text-align: center;
-          font-size: 14px;
-          line-height: 36px;
-          background: #1e80ff;
-          border: 0;
-          border-radius: 4px;
-          color: #ffffff;
-          padding: 0;
-          cursor: pointer;
-        }
-      }
-    }
-  }
 
   // 评论区列表
   .comment-list {

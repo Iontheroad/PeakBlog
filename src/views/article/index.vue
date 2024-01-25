@@ -8,7 +8,6 @@
     <!-- <MdCatalog editor-id="article-details" :scroll-element="scrollElement" /> -->
   </div>
 
-  <!-- 评论区 -->
   <CommentsSection />
 </template>
 
@@ -38,6 +37,7 @@ async function selectArticle() {
   try {
     let result = await reqSelectArticle({ article_id: article_id.value });
     article.value = result.data;
+    console.log(result);
   } catch (error) {
     console.log(error);
   }
