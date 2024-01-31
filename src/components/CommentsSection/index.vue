@@ -13,7 +13,7 @@
     <el-divider></el-divider>
 
     <!-- 评论区列表  -->
-    <div class="comment-list" v-if="commentList.length">
+    <div class="comment-list" v-if="commentList?.length">
       <!-- 一级容器 -->
       <div class="comment" v-for="item in commentList" :key="item.id">
         <!-- 一级头像-->
@@ -46,13 +46,21 @@
                 {{ item.isOpenBox ? "取消回复" : "回复" }}
               </div>
               <!-- 删除按钮, 本人才显示 -->
-              <div class="del" v-if="item.user_id == id" @click="deleteComment(item.id)">
+              <div
+                class="del"
+                v-if="item.user_id == user_id"
+                @click="deleteComment(item.id)"
+              >
                 删除
               </div>
             </div>
 
             <!-- 评论框 -->
-            <CommentBox v-if="item.isOpenBox" @post-comment="postComment" />
+            <CommentBox
+              v-if="item.isOpenBox"
+              :comment="item"
+              @post-comment="postComment"
+            />
           </div>
           <!-- 这沿途的风景或许不是那么精彩,但当我们回首往昔时,便是峥嵘岁月! -->
           <!-- 一级下的二级评论容器 -->
@@ -78,7 +86,7 @@
                     </div>
                     <CommentContent
                       :content="child.content"
-                      :label-id="child.id"
+                      :label-id="child.id + ''"
                       bg-color="#f7f8fa"
                     />
                     <!-- 点赞 , 回复 -->
@@ -99,7 +107,7 @@
                       <!-- 删除按钮, 本人才显示 -->
                       <div
                         class="sub-del"
-                        v-if="child.user_id == id"
+                        v-if="child.user_id == user_id"
                         @click="deleteComment(child.id)"
                       >
                         删除
@@ -107,7 +115,11 @@
                     </div>
 
                     <!-- 评论框 -->
-                    <CommentBox v-if="child.isOpenBox" />
+                    <CommentBox
+                      v-if="child.isOpenBox"
+                      :comment="child"
+                      @post-comment="postComment"
+                    />
                   </div>
                 </div>
               </div>
@@ -133,96 +145,46 @@ defineOptions({
 });
 import CommentBox from "./CommentBox.vue";
 import CommentContent from "./CommentContent.vue";
+import { useRoute } from "vue-router";
 import { ref, computed, onMounted } from "vue";
-let commentList = ref<any>([]); // 评论列表
+import {
+  reqSelectArticleComment,
+  reqInsertArticleComment,
+  reqDeleteArticleComment,
+  type Article
+} from "@/api/article";
+import { useUserStore } from "@/store/modules/user";
 
+const userStore = useUserStore();
 // 当前登录的用户id
-const id = computed(() => {
-  return 1;
+const user_id = computed(() => {
+  return userStore.userInfo?.user_id;
+});
+const route = useRoute();
+const article_id = computed((): number => {
+  return Number(route.query.article_id);
 });
 // const url = computed(() => {
 //   return "http://119.91.22.164:8085/OASystem/gaoding-koutu.png";
 // });
-onMounted(() => {
-  getComment(); //获取评论
-});
 
+let commentList = ref<Article.ArticleComment[]>(); // 评论列表
 /**
  * 获取评论
  */
-function getComment() {
-  commentList.value = [
-    {
-      id: 7,
-      article_id: 11,
-      user_id: 26,
-      nickname: "peak",
-      avatar: "",
-      create_time: "2024-01-20 15:57:47",
-      content: "评论内容10",
-      parent_id: 0,
-      reply_id: 0,
-      reply_user_id: 0,
-      reply_nickname: "气温",
-      reply_avatar: "气温",
-      likes_count: 0,
-      user_liked: 0,
-      children: [
-        {
-          id: 13,
-          avatar: "",
-          content: "评论内容10",
-          user_id: 26,
-          nickname: "peak",
-          reply_id: 7,
-          parent_id: 7,
-          article_id: 11,
-          user_liked: 1,
-          create_time: "2024-01-20 17:08:34.000000",
-          likes_count: 1,
-          reply_avatar: "ffff",
-          reply_user_id: 27,
-          reply_nickname: "那一道似有似无的墙啊"
-        }
-      ]
-    },
-    {
-      id: 10,
-      article_id: 11,
-      user_id: 26,
-      nickname: "peak",
-      avatar: "",
-      create_time: "2024-01-20 15:59:47",
-      content: "评论内容10",
-      parent_id: 0,
-      reply_id: 0,
-      reply_user_id: 0,
-      reply_nickname: "气温",
-      reply_avatar: "气温",
-      likes_count: 0,
-      user_liked: 0,
-      children: []
-    },
-    {
-      id: 12,
-      article_id: 11,
-      user_id: 26,
-      nickname: "peak",
-      avatar: "",
-      create_time: "2024-01-20 15:59:58",
-      content: "评论内容10",
-      parent_id: 0,
-      reply_id: 0,
-      reply_user_id: 0,
-      reply_nickname: "气温",
-      reply_avatar: "气温",
-      likes_count: 0,
-      user_liked: 0,
-      children: []
-    }
-  ];
-}
+async function getComment() {
+  try {
+    let result = await reqSelectArticleComment({ article_id: article_id.value });
+    console.log(result);
 
+    commentList.value = result.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+onMounted(() => {
+  getComment(); //获取评论
+});
 let preComment = ref<any>(null); // 记录当前打开的评论框
 /**
  * 打开评论框
@@ -240,16 +202,43 @@ const clickComment = (item: any) => {
 /**
  * 发布评论
  */
-const postComment = (item: any) => {
-  console.log(item);
+const postComment = async (content: string) => {
+  console.log(content);
+  try {
+    let result = await reqInsertArticleComment({
+      article_id: article_id.value,
+      content: content,
+      parent_id:
+        preComment.value?.parent_id == 0
+          ? preComment.value?.id
+          : preComment.value?.parent_id || 0,
+      reply_id: preComment.value?.id || null,
+      reply_nickname: preComment.value?.nickname || null,
+      reply_user_id: preComment.value?.user_id || null,
+      reply_avatar: preComment.value?.avatar || null
+    });
+    console.log(result);
+  } catch (error) {
+    console.log(error);
+  } finally {
+    getComment();
+  }
 };
 
 /**
  * 删除评论
  * @param id
  */
-const deleteComment = (id: number) => {
+const deleteComment = async (id: number) => {
   console.log(id);
+  try {
+    let result = await reqDeleteArticleComment({ id });
+    console.log(result);
+  } catch (error) {
+    console.log(error);
+  } finally {
+    getComment();
+  }
 };
 </script>
 

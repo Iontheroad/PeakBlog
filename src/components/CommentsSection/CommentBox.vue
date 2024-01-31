@@ -3,6 +3,7 @@
     <div class="input-box focused">
       <!-- 输入区域 -->
       <div
+        ref="contentRef"
         class="content-input"
         contenteditable="true"
         placeholder="输入评论（Enter换行，Ctrl + Enter发送）"
@@ -31,10 +32,30 @@
 </template>
 
 <script lang="ts" setup name="CommentBox">
+import { ref } from "vue";
+
+const props = defineProps({
+  comment: {
+    type: Object,
+    default: () => {
+      return {};
+    }
+  }
+});
+const emits = defineEmits(["postComment"]);
+
+let contentRef = ref<HTMLDivElement>();
 /**
  * 发表评论
  */
-const postComment = () => {};
+const postComment = () => {
+  console.log(props.comment);
+
+  emits("postComment", contentRef.value?.innerText);
+  if (contentRef.value) {
+    contentRef.value.innerText = "";
+  }
+};
 </script>
 
 <style lang="scss" scoped>
