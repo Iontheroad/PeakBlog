@@ -4,6 +4,24 @@
 // import type { AxiosResponse } from "axios";
 import request from "@/utils/request.ts";
 const prefix = "/admin";
+
+export interface UserInfo {
+  user_id?: number;
+  username: string;
+  nickname: string;
+  avatar?: string;
+  sex: string;
+  age: number;
+  address: string;
+  phone: string;
+  email: string;
+  state: 1 | 2; // 1 正常 2 禁用
+  create_time?: string;
+  update_time?: string;
+  login_time?: string;
+}
+export type AddUser = Omit<UserInfo, "create_time" | "update_time" | "login_time">;
+
 /**
  * 用户登录
  * @param data
@@ -74,31 +92,17 @@ export function reqSelectUserList(params: { username: string; nickname: string }
 }
 
 /**
- * 查询用户
+ * @description 查询用户信息
+ * @param {object} [params]
+ * @param {number} [params.user_id] 某个用户id(如果不传则是获取当前登录的用户信息)
  */
-export function reqSelectUser() {
+export function reqSelectUser(params?: { user_id: number }) {
   return request({
     url: `${prefix}/user`,
-    method: "get"
+    method: "get",
+    params
   });
 }
-
-export interface User {
-  user_id?: number;
-  username: string;
-  nickname: string;
-  avatar?: string;
-  sex: string;
-  age: number;
-  address: string;
-  phone: string;
-  email: string;
-  state: 1 | 2; // 1 正常 2 禁用
-  create_time?: string;
-  update_time?: string;
-  login_time?: string;
-}
-export type AddUser = Omit<User, "create_time" | "update_time" | "login_time">;
 
 /**
  * 修改用户信息
