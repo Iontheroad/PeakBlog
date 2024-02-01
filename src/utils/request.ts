@@ -128,7 +128,8 @@ function refreshToken() {
       userStore.access_token = result.data.access_token; // 更新 access_token
       resolve(true);
     } catch (error) {
-      userStore.setToken({ access_token: "", username: "", refresh_token: "" }); // 清空 token
+      // HACK: 前台的未登录逻辑可以考虑去除
+      userStore.resetUserInfo(); // 重置用户信息
       router.replace("/login"); // 跳转登录页
       resolve(false);
     } finally {

@@ -8,9 +8,7 @@ import { reqSelectUser, type UserInfo } from "@/api/user";
 
 export interface UserProps {
   access_token: string;
-  username: string;
   refresh_token: string;
-  avatar: string;
   userInfo: UserInfo | null;
 }
 
@@ -19,8 +17,6 @@ export const useUserStore = defineStore({
   state: (): UserProps => ({
     access_token: "", // 访问令牌
     refresh_token: "", // 刷新令牌
-    username: "",
-    avatar: "",
     userInfo: null
   }),
   actions: {
@@ -46,6 +42,15 @@ export const useUserStore = defineStore({
       } catch (error) {
         console.log(error);
       }
+    },
+
+    /**
+     * 重置用户信息
+     */
+    resetUserInfo() {
+      this.access_token = "";
+      this.refresh_token = "";
+      this.userInfo = null;
     }
   },
   getters: {},

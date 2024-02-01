@@ -110,6 +110,10 @@ const router = createRouter({
 //   // 6.正常访问页面
 //   next();
 // });
+router.beforeEach((to, from, next) => {
+  NProgress.start();
+  next();
+});
 
 /**
  * @description 路由跳转错误
