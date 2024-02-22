@@ -3,8 +3,7 @@
  */
 import { ReqPage } from "./interface/index";
 import request from "@/utils/request";
-const prefix = "/admin";
-const prefix2 = "/blog";
+const prefix = "/blog";
 
 export namespace Article {
   export interface ArticleItem {
@@ -109,7 +108,7 @@ export function reqSelectArticle(params: { article_id: number }) {
  */
 export function reqSelectArticleComment(params: { article_id: number }) {
   return request({
-    url: `${prefix2}/article/comment/${params.article_id}`,
+    url: `${prefix}/article/comment/${params.article_id}`,
     method: "get"
   });
 }
@@ -119,7 +118,7 @@ export function reqSelectArticleComment(params: { article_id: number }) {
  */
 export function reqInsertArticleComment(data: Article.ReqInsertArticleComment) {
   return request({
-    url: `${prefix2}/article/comment`,
+    url: `${prefix}/article/comment`,
     method: "post",
     data
   });
@@ -130,7 +129,7 @@ export function reqInsertArticleComment(data: Article.ReqInsertArticleComment) {
  */
 export function reqDeleteArticleComment(params: { id: number }) {
   return request({
-    url: `${prefix2}/article/comment/${params.id}`,
+    url: `${prefix}/article/comment/${params.id}`,
     method: "delete"
   });
 }
@@ -140,7 +139,7 @@ export function reqDeleteArticleComment(params: { id: number }) {
  */
 export function reqArticleCommentLike(data: { article_id: number; comment_id: number }) {
   return request({
-    url: `${prefix2}/article/comment/like`,
+    url: `${prefix}/article/comment/like`,
     method: "patch",
     data
   });

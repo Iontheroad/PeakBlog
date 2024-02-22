@@ -3,7 +3,7 @@
  */
 // import type { AxiosResponse } from "axios";
 import request from "@/utils/request.ts";
-const prefix = "/admin";
+const prefix = "/blog";
 
 export interface UserInfo {
   user_id?: number;
