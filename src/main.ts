@@ -3,6 +3,8 @@ import App from "./App.vue";
 import router from "@/router";
 import pinia from "@/store";
 
+/* plugin */
+
 // reset style sheet
 import "@/styles/reset.scss";
 // font css

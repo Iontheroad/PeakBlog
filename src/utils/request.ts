@@ -4,7 +4,7 @@
 import { ElMessage } from "element-plus";
 import { useUserStore } from "@/store/modules/user";
 import axios, { AxiosInstance, AxiosError, InternalAxiosRequestConfig } from "axios";
-import router from "@/router";
+// import router from "@/router";
 import { reqRefreshToken } from "@/api/user";
 
 interface ICodeMessage {
@@ -130,7 +130,7 @@ function refreshToken() {
     } catch (error) {
       // HACK: 前台的未登录逻辑可以考虑去除
       userStore.resetUserInfo(); // 重置用户信息
-      router.replace("/login"); // 跳转登录页
+      // router.replace("/login"); // 跳转登录页
       resolve(false);
     } finally {
       refreshPromise = null; // 重置刷新状态
