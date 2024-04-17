@@ -14,8 +14,8 @@ NProgress.configure({
 
 const routes: RouteRecordRaw[] = [
   {
-    path: "/",
-    redirect: "/home"
+    path: "/home",
+    redirect: "/"
   },
   {
     path: "/layout",
@@ -24,7 +24,7 @@ const routes: RouteRecordRaw[] = [
     redirect: "/",
     children: [
       {
-        path: "/home",
+        path: "/",
         name: "Home",
         alias: "/home",
         component: () => import("@/views/home/index.vue"),

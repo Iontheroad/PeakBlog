@@ -1,12 +1,16 @@
 <template>
   <div class="home">
-    <!-- 文章区域 -->
-    <CategorySearch :category-list="categoryList" @change-category="changeCategory" />
+    <!-- 标签筛选 -->
+    <TagsList :tag-list="tagList" @change-tag="changeTag" />
     <!-- 文章列表 -->
     <section class="article-list">
       <ArticleItem v-for="item in articleList" :key="item.article_id" :article="item" />
+
+      <el-empty v-show="!total" description="暂无文章" :image-size="200" />
+
       <section class="pagination">
         <Pagination
+          v-show="total"
           :total="total"
           v-model:current-page="queryParams.currentPage"
           v-model:page-size="queryParams.pageSize"
@@ -19,30 +23,36 @@
   <!-- 侧边栏 -->
   <LayoutAside>
     <BoxUser />
+    <CategoryList
+      v-model:cateId="queryParams.cate_id"
+      @change-category="selectArticleList"
+    />
   </LayoutAside>
 </template>
 
 <script lang="ts" setup name="Home">
 import { ref, onMounted } from "vue";
 import { reqSelectArticleList, type Article } from "@/api/article.ts";
-import { reqSelectCategory } from "@/api/category";
+import { reqSelectTags } from "@/api/tags.ts";
 import LayoutAside from "@/layout/components/Aside/index.vue";
 import BoxUser from "@/layout/components/Aside/BoxUser.vue";
-import CategorySearch from "./CategorySearch.vue";
-import ArticleItem from "./ArticleItem.vue";
 import Pagination from "@/components/Pagination/index.vue";
+import ArticleItem from "./ArticleItem.vue";
+import TagsList from "./TagsList.vue";
+import CategoryList from "./CategoryList.vue";
 
 let total = ref(0);
 let queryParams = ref<Article.ReqSelectArticleList>({
   currentPage: 1,
   pageSize: 10,
-  category_ids: "", // 不传 或者 空字符串就是 获取全部分类
+  tag_ids: "", // 不传 或者 空字符串就是 获取全部标签
+  cate_id: undefined,
   status: 2, // 1: 未通过 2: 通过 3: 待审核  用户端只能获取通过的
   searchKey: ""
 });
 
 onMounted(() => {
-  selectCategoryList();
+  selectTags();
   selectArticleList();
 });
 
@@ -51,32 +61,30 @@ let articleList = ref();
 async function selectArticleList() {
   try {
     let result = await reqSelectArticleList({ ...queryParams.value });
-    // console.log(result);
     articleList.value = result.data;
+    total.value = result.total;
   } catch (error) {
     console.log(error);
   }
 }
 
-// 获取文章分类
-const categoryList = ref([]);
-async function selectCategoryList() {
+// 获取文章标签
+const tagList = ref([]);
+async function selectTags() {
   try {
-    let result = await reqSelectCategory();
-    categoryList.value = result.data;
+    let result = await reqSelectTags();
+    tagList.value = result.data;
   } catch (error) {
     console.log(error);
   }
 }
 
 /**
- * @description 文章分类 和 搜索框变动触发
- * @param categoryIds
- * @param searchKey
+ * @description 文章标签
+ * @param tagIds - 标签id集合
  */
-const changeCategory = (categoryIds: (string | number)[], searchKey: string) => {
-  queryParams.value.searchKey = searchKey;
-  queryParams.value.category_ids = categoryIds.join(",");
+const changeTag = (tagIds: number[]) => {
+  queryParams.value.tag_ids = tagIds.join(",");
   selectArticleList();
 };
 </script>

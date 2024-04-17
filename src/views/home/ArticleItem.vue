@@ -28,23 +28,29 @@
           </div>
         </div>
       </div>
-      <div class="category">
-        <SvgIcon icon-name="category" />
-        <el-tag
-          v-for="cate in article.article_cateList"
-          :key="cate.cate_id"
-          type="success"
-          effect="dark"
-          size="small"
-        >
-          {{ cate.cate_name }}
-        </el-tag>
+      <div class="category-tags">
+        <div class="category">
+          <SvgIcon icon-name="category" />
+          {{ article.cate_id }}
+        </div>
+        <div class="tags">
+          <SvgIcon icon-name="tags" />
+          <el-tag
+            v-for="tag in article.article_tagList"
+            :key="tag.tag_id"
+            type="success"
+            effect="dark"
+            size="small"
+          >
+            {{ tag.tag_name }}
+          </el-tag>
+        </div>
       </div>
       <div class="data">
-        <span class="likes" @click.prevent="clickLikes">
-          <SvgIcon icon-name="like-filled" />
-          <SvgIcon icon-name="like-outlined" />
-          {{ article.likes }}
+        <span class="likes" @click.prevent="clickLikes(article)">
+          <SvgIcon v-if="article.user_liked" on-name="like-filled" />
+          <SvgIcon v-else icon-name="like-outlined" />
+          {{ article.likes_count }}
         </span>
         <span class="browse"> <SvgIcon icon-name="browse" />{{ article.browse }} </span>
         <span class="comment">
@@ -56,8 +62,8 @@
 </template>
 
 <script lang="ts" setup name="ArticleItem">
-import type { Article } from "@/api/article";
 import { toRefs } from "vue";
+import { reqArticleLike, Article } from "@/api/article";
 
 interface Props {
   article: Article.ArticleItem;
@@ -72,8 +78,18 @@ const to = {
   }
 };
 
-const clickLikes = () => {
-  console.log("点赞");
+/**
+ * @description
+ */
+const clickLikes = async (article: Article.ArticleItem) => {
+  try {
+    let result = await reqArticleLike({
+      article_id: article.article_id
+    });
+    console.log(result);
+  } catch (error) {
+    console.log(error);
+  }
 };
 </script>
 
@@ -123,10 +139,17 @@ const clickLikes = () => {
     order: 0;
     width: 240px;
     height: 240px;
+    overflow: hidden;
     img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      transition: transform 0.3s;
+    }
+    &:hover {
+      img {
+        transform: scale(1.1);
+      }
     }
   }
   .article-info {
@@ -184,14 +207,20 @@ const clickLikes = () => {
         }
       }
     }
-    .category {
+    .category-tags {
       display: flex;
-      flex-wrap: wrap;
       align-items: center;
-      gap: 4px 4px;
+      column-gap: 10px;
+      .category,
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 4px 4px;
+      }
     }
     .data {
-      @include flex;
+      @include flex($align: center);
 
       column-gap: 10px;
       span {

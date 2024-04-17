@@ -23,8 +23,8 @@ export namespace Article {
     update_by: string;
     update_id: number;
     update_time: string;
-
-    article_cateList?: { cate_id: number; cate_name: string }[];
+    cate_id: number;
+    article_tagList?: { tag_id: number; tag_name: string }[];
     // 点赞、浏览、评论 暂时没有
 
     likes_count?: number; // 点赞
@@ -38,7 +38,8 @@ export namespace Article {
   export interface ReqSelectArticleList extends ReqPage {
     status: 2; // 只能展示已通过的
     searchKey: string;
-    category_ids?: string;
+    cate_id?: number | undefined;
+    tag_ids?: string;
   }
 
   interface Comment {
@@ -131,6 +132,16 @@ export function reqDeleteArticleComment(params: { id: number }) {
   return request({
     url: `${prefix}/article/comment/${params.id}`,
     method: "delete"
+  });
+}
+
+/**
+ * @description 文章 点赞或取消
+ */
+export function reqArticleLike({ article_id }: { article_id: number }) {
+  return request({
+    url: `${prefix}/article/like/${article_id}`,
+    method: "patch"
   });
 }
 
