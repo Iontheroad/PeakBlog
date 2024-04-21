@@ -1,29 +1,69 @@
 <template>
   <div class="box-user">
-    <span>作者</span>
-    <div class="user-info">
-      <img
-        src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
-        alt=""
-      />
-      <span class="user-name">Peak</span>
+    <div class="login-status">
+      <span>{{ isLogin ? "已登录" : "未登录" }}</span>
+      <el-text v-if="isLogin" type="danger" style="cursor: pointer" @click="logout">
+        退出
+      </el-text>
+      <el-text v-else type="primary" @click="login" style="cursor: pointer">登陆</el-text>
     </div>
-    <div class="action-btn">
-      <el-button type="primary">详情</el-button>
-      <el-button>登出</el-button>
+    <div class="user-info" v-if="isLogin">
+      <img :src="userInfo?.avatar" alt="" />
+      <span class="user-name">{{ userInfo?.nickname }}</span>
     </div>
+    <!-- <div class="action-btn"></div> -->
   </div>
 </template>
 
-<script lang="ts" setup name="BoxUser"></script>
+<script lang="ts" setup name="BoxUser">
+import { useRouter } from "vue-router";
+
+import { useUserStore } from "@/store/modules/user";
+import { reqUserLogout } from "@/api/user";
+import { computed } from "vue";
+import { ElMessage } from "element-plus";
+const router = useRouter();
+const userStore = useUserStore();
+
+const userInfo = computed(() => {
+  return userStore.userInfo;
+});
+const isLogin = computed(() => {
+  return !!userInfo.value?.user_id;
+});
+
+/**
+ * 跳转到登陆页面
+ * 将当前路由路径作为登陆成功后的跳转地址，通过query参数传递给登陆页面
+ */
+const login = () => {
+  const currentRoute = router.currentRoute.value;
+  const redirectPath = {
+    name: "Login",
+    query: {
+      redirect: currentRoute.path
+    }
+  };
+  // 跳转到登陆页面
+  router.push(redirectPath);
+};
+
+/**
+ * 登出
+ */
+const logout = async () => {
+  try {
+    let result = await reqUserLogout();
+    console.log(result);
+    ElMessage.success("登出成功");
+    userStore.resetUserInfo();
+  } catch (error) {
+    console.log(error);
+  }
+};
+</script>
 
 <style lang="scss" scoped>
-@mixin flex($direction: row, $justify: flex-start, $align: flex-start) {
-  display: flex;
-  flex-direction: $direction;
-  justify-content: $justify;
-  align-items: $align;
-}
 .box-user {
   @include flex(column, center, flex-start);
 
@@ -32,6 +72,11 @@
   padding: 1.3rem;
   background-color: #ffffff;
   border-radius: $border-radius;
+  .login-status {
+    @include flex(row, space-between, center);
+
+    width: 100%;
+  }
   .user-info {
     @include flex(column, center, center);
 
@@ -46,11 +91,11 @@
     }
   }
   .action-btn {
-    @include flex(row, space-between, center);
+    @include flex(row, center, center);
 
     width: 100%;
     margin-top: 1.5em;
-    padding: 0 1em;
+    row-gap: 10px;
   }
 }
 </style>

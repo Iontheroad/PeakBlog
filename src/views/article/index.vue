@@ -57,8 +57,8 @@
       <CommentsSection />
     </div>
 
-    <!-- 侧边栏 -->
     <LayoutAside>
+      <BoxUser />
       <ArticleCatalogue />
     </LayoutAside>
   </div>
@@ -73,6 +73,7 @@ defineOptions({ name: "ArticleView" });
 import Banner from "@/components/Banner/index.vue";
 import LayoutAside from "@/layout/components/Aside/index.vue";
 import ArticleCatalogue from "@/layout/components/Aside/ArticleCatalogue.vue";
+import BoxUser from "@/layout/components/Aside/BoxUser.vue";
 import CommentsSection from "./components/CommentsSection/index.vue";
 
 import { onMounted, computed, ref } from "vue";

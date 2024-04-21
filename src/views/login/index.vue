@@ -6,7 +6,7 @@
         :class="{ register: actionType == 'register', forget: actionType == 'forget' }"
       >
         <div class="content">
-          <h2>Peak Todo</h2>
+          <h2>Peak Blog</h2>
           <form>
             <div class="inputBox">
               <input type="text" v-model="formData.username" />
@@ -98,7 +98,8 @@ async function userLogin() {
     }); // 设置token 并获取用户信息
 
     ElMessage.success("登录成功");
-    router.push("/");
+    const redirect = (router.currentRoute.value.query?.redirect as string) ?? "/";
+    router.push(redirect);
   } catch (error) {
     console.log(error);
   }
