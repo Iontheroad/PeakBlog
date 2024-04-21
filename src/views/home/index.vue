@@ -1,14 +1,15 @@
 <template>
-  <div class="home">
-    <!-- 标签筛选 -->
-    <TagsList :tag-list="tagList" @change-tag="changeTag" />
-    <!-- 文章列表 -->
-    <section class="article-list">
-      <ArticleItem v-for="item in articleList" :key="item.article_id" :article="item" />
+  <Banner />
+  <div class="home-container">
+    <article class="content">
+      <!-- 标签筛选 -->
+      <TagsList :tag-list="tagList" @change-tag="changeTag" />
+      <!-- 文章列表 -->
+      <section class="article-list">
+        <ArticleItem v-for="item in articleList" :key="item.article_id" :article="item" />
 
-      <el-empty v-show="!total" description="暂无文章" :image-size="200" />
+        <el-empty v-show="!total" description="暂无文章" :image-size="200" />
 
-      <section class="pagination">
         <Pagination
           v-show="total"
           :total="total"
@@ -17,23 +18,24 @@
           @change="selectArticleList"
         />
       </section>
-    </section>
+    </article>
+    <!-- 侧边栏 -->
+    <LayoutAside>
+      <BoxUser />
+      <CategoryList
+        v-model:cateId="queryParams.cate_id"
+        @change-category="selectArticleList"
+      />
+    </LayoutAside>
   </div>
-
-  <!-- 侧边栏 -->
-  <LayoutAside>
-    <BoxUser />
-    <CategoryList
-      v-model:cateId="queryParams.cate_id"
-      @change-category="selectArticleList"
-    />
-  </LayoutAside>
 </template>
 
 <script lang="ts" setup name="Home">
 import { ref, onMounted } from "vue";
 import { reqSelectArticleList, type Article } from "@/api/article.ts";
 import { reqSelectTags } from "@/api/tags.ts";
+
+import Banner from "@/components/Banner/index.vue";
 import LayoutAside from "@/layout/components/Aside/index.vue";
 import BoxUser from "@/layout/components/Aside/BoxUser.vue";
 import Pagination from "@/components/Pagination/index.vue";
@@ -90,28 +92,30 @@ const changeTag = (tagIds: number[]) => {
 </script>
 
 <style lang="scss" scoped>
-.home {
-  flex: 1;
-  .article-list {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border-radius: 10px;
-    background-color: #ffffff;
-    margin-top: 10px;
-    row-gap: 20px;
-    padding: 20px;
-    transform-style: preserve-3d;
-    perspective: 1000px;
-  }
-
-  @media screen and (width <= 768px) {
-    width: 95%;
-    margin: 0 auto;
+.home-container {
+  .content {
+    width: 100%;
     .article-list {
-      padding: 0;
-      margin-top: 20px;
-      background-color: transparent;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border-radius: 10px;
+      background-color: #ffffff;
+      margin-top: 10px;
+      row-gap: 20px;
+      padding: 20px;
+      transform-style: preserve-3d;
+      perspective: 1000px;
+    }
+
+    @media screen and (width <= 768px) {
+      width: 95%;
+      margin: 0 auto;
+      .article-list {
+        padding: 0;
+        margin-top: 20px;
+        background-color: transparent;
+      }
     }
   }
 }

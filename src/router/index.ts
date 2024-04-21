@@ -33,7 +33,7 @@ const routes: RouteRecordRaw[] = [
         }
       },
       {
-        path: "/article/details",
+        path: "/article/:article_id",
         name: "Article",
         component: () => import("@/views/article/index.vue"),
         meta: {

@@ -162,7 +162,7 @@ const user_id = computed(() => {
 });
 const route = useRoute();
 const article_id = computed((): number => {
-  return Number(route.query.article_id);
+  return Number(route.params.article_id);
 });
 // const url = computed(() => {
 //   return "http://119.91.22.164:8085/OASystem/gaoding-koutu.png";

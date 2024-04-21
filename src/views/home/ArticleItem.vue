@@ -73,7 +73,7 @@ const { article } = toRefs(props);
 
 const to = {
   name: "Article",
-  query: {
+  params: {
     article_id: article.value.article_id
   }
 };
@@ -94,12 +94,6 @@ const clickLikes = async (article: Article.ArticleItem) => {
 </script>
 
 <style lang="scss" scoped>
-@mixin flex($direction: row, $justify: flex-start, $align: flex-start) {
-  display: flex;
-  flex-direction: $direction;
-  justify-content: $justify;
-  align-items: $align;
-}
 .article-item {
   display: flex;
   justify-content: space-between;

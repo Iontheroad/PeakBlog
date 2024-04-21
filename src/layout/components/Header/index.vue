@@ -2,7 +2,7 @@
   <header class="header" :class="{ 'fixed-header': isPageScroll }">
     <!-- 头部 导航 -->
     <div class="header-left">
-      <div class="logo">OnTheRoad</div>
+      <!-- <div class="logo">OnTheRoad</div> -->
       <nav @click="toPath">
         <span
           v-for="item in navList"
@@ -64,6 +64,9 @@ watch(searchKey, () => {});
   &.fixed-header {
     background-color: hsl(0deg 0% 100% / 80%);
     backdrop-filter: saturate(5) blur(20px);
+    .header-left nav span {
+      color: black;
+    }
   }
   .header-left {
     display: flex;
@@ -75,13 +78,15 @@ watch(searchKey, () => {});
       span {
         padding: 2px 8px;
         border-radius: 3px;
+        color: white;
         cursor: pointer;
         &.nav-active,
         &:hover {
           color: #409eff;
-          box-shadow:
-            inset 0 0 7px 0 rgb(0 0 0 / 10%),
-            0 0 6px 0 rgb(0 0 0 / 10%);
+
+          // box-shadow:
+          //   inset 0 0 7px 0 rgb(0 0 0 / 10%),
+          //   0 0 6px 0 rgb(0 0 0 / 10%);
         }
       }
     }

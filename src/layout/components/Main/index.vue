@@ -7,12 +7,14 @@
 
 <script lang="ts" setup name="Main"></script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .main {
-  display: flex;
-  max-width: 1400px;
-  margin: 20px auto 0;
   padding-bottom: 50px;
+  > div[class$="container"] {
+    display: flex;
+    max-width: 1400px;
+    margin: 20px auto 0;
+  }
 }
 
 // @media screen and (width >=1400px) {
