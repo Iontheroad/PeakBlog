@@ -18,15 +18,15 @@
           </div>
           <div class="data">
             <div class="likes" @click.prevent="clickLikes(article!)">
-              <SvgIcon v-if="article?.user_liked" on-name="like-filled" />
+              <SvgIcon v-if="article?.user_liked" icon-name="like-filled" />
               <SvgIcon v-else icon-name="like-outlined" />
-              {{ article?.likes_count }}
+              {{ article?.like_count }}
             </div>
-            <div class="browse">
-              <SvgIcon icon-name="browse" />{{ article?.browse || 0 }}
+            <div class="views">
+              <SvgIcon icon-name="views" />{{ article?.views || 0 }}
             </div>
             <div class="comment">
-              <SvgIcon icon-name="comment" />{{ article?.comment || 0 }}
+              <SvgIcon icon-name="comment" />{{ article?.comment_count || 0 }}
             </div>
             <div class="category-tags">
               <div class="category">
@@ -35,7 +35,7 @@
               </div>
               <div class="tags">
                 <SvgIcon icon-name="tags" />
-                <span v-for="tag in article?.article_tagList" :key="tag.tag_id">
+                <span v-for="tag in article?.tags" :key="tag.tag_id">
                   {{ tag.tag_name }}
                 </span>
               </div>
@@ -119,7 +119,8 @@ const clickLikes = async (article: Article.ArticleItem) => {
     let result = await reqArticleLike({
       article_id: article.article_id
     });
-    console.log(result);
+    article.user_liked = result.data.user_liked;
+    article.like_count = result.data.like_count;
   } catch (error) {
     console.log(error);
   }
@@ -180,7 +181,7 @@ const clickLikes = async (article: Article.ArticleItem) => {
         column-gap: 2px;
         &.likes {
           cursor: pointer;
-          &:hover .svg-icon {
+          &:hover {
             color: #1e80ff;
           }
         }

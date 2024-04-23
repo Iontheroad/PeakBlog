@@ -31,12 +31,12 @@
       <div class="category-tags">
         <div class="category">
           <SvgIcon icon-name="category" />
-          {{ article.cate_id }}
+          {{ article.category.cate_name }}
         </div>
         <div class="tags">
           <SvgIcon icon-name="tags" />
           <el-tag
-            v-for="tag in article.article_tagList"
+            v-for="tag in article.tags"
             :key="tag.tag_id"
             type="success"
             effect="dark"
@@ -48,13 +48,13 @@
       </div>
       <div class="data">
         <span class="likes" @click.prevent="clickLikes(article)">
-          <SvgIcon v-if="article.user_liked" on-name="like-filled" />
+          <SvgIcon v-if="article.user_liked" icon-name="like-filled" />
           <SvgIcon v-else icon-name="like-outlined" />
-          {{ article.likes_count }}
+          {{ article.like_count }}
         </span>
-        <span class="browse"> <SvgIcon icon-name="browse" />{{ article.browse }} </span>
+        <span class="views"> <SvgIcon icon-name="views" />{{ article.views }} </span>
         <span class="comment">
-          <SvgIcon icon-name="comment" />{{ article.comment }}
+          <SvgIcon icon-name="comment" />{{ article.comment_count }}
         </span>
       </div>
     </div>
@@ -86,7 +86,8 @@ const clickLikes = async (article: Article.ArticleItem) => {
     let result = await reqArticleLike({
       article_id: article.article_id
     });
-    console.log(result);
+    article.user_liked = result.data.user_liked;
+    article.like_count = result.data.like_count;
   } catch (error) {
     console.log(error);
   }
@@ -216,12 +217,17 @@ const clickLikes = async (article: Article.ArticleItem) => {
     .data {
       @include flex($align: center);
 
-      column-gap: 10px;
+      column-gap: 15px;
       span {
         @include flex($align: center);
 
-        font-size: 12px;
         column-gap: 2px;
+        &.likes {
+          cursor: pointer;
+          &:hover {
+            color: #1e80ff;
+          }
+        }
       }
     }
   }
