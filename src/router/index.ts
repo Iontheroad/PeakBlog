@@ -82,34 +82,16 @@ const router = createRouter({
 /**
  * @description 路由拦截，登录拦截
  */
-// router.beforeEach((to, from, next) => {
-//   const userStore = useUserStore();
+router.beforeEach((to, from, next) => {
+  // NProgress 开始
+  NProgress.start();
 
-//   // 1.NProgress 开始
-//   NProgress.start();
+  // 动态标题
+  const title = import.meta.env.VITE_GLOB_APP_TITLE; // 路由标题
+  document.title = to.meta.title ? `${to.meta.title} - ${title}` : title;
 
-//   // 2.动态标题
-//   const title = import.meta.env.VITE_GLOB_APP_TITLE; // 路由标题
-//   document.title = to.meta.title ? `${to.meta.title} - ${title}` : title;
-
-//   // 3.是否访问的登录页
-//   if (to.path.toLocaleLowerCase().startsWith("/login")) {
-//     // 有Token就在当前页
-//     if (userStore.access_token) return next(from.fullPath);
-//     // 没有token重定向到登录页,
-//     // 清空路由
-//     return next();
-//   }
-
-//   // 4.判断访问页面是否在路由白名单地址(静态路由)中，如果存在直接放行
-//   if (ROUTE_WHITE_LIST.includes(to.path)) return next();
-
-//   // 5.判断是否有Token , 没有重定向到登录页
-//   if (!userStore.access_token) return next({ path: "/login", replace: true });
-
-//   // 6.正常访问页面
-//   next();
-// });
+  next();
+});
 router.beforeEach((to, from, next) => {
   NProgress.start();
   next();

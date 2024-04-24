@@ -32,7 +32,7 @@ const route = useRoute();
 const { isPageScroll } = usePageScroll(); // 页面滚动
 
 const navList = reactive([
-  { name: "首页", path: "/home" },
+  { name: "首页", path: "/" },
   { name: "友链", path: "/blogroll" },
   { name: "留言", path: "/guestbook" },
   { name: "关于", path: "/about" }

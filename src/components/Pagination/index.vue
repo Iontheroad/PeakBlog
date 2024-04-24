@@ -16,15 +16,15 @@ const props = withDefaults(
   defineProps<{
     total: number;
     currentPage: number;
-    pageSize?: number;
+    pageSize: number;
     pagerCount?: number;
     layout?: string;
     pageSizes?: number[];
   }>(),
   {
     pagerCount: 11,
-    pageSize: 10,
-    layout: "sizes,prev, pager, next",
+    // layout: "sizes,prev, pager, next",
+    layout: "sizes,prev, pager, next, jumper, -&gt;, total",
     pageSizes: () => [10, 20, 30, 40]
   }
 );
