@@ -1,27 +1,23 @@
 <template>
   <div class="comment-box">
     <div class="input-box focused">
-      <!-- 输入区域 -->
       <div
         ref="contentRef"
         class="content-input"
         contenteditable="true"
-        placeholder="输入评论（Enter换行，Ctrl + Enter发送）"
+        :placeholder="placeholder"
       ></div>
 
-      <!-- 上传的图片区域 -->
       <div class="image-preview-box"></div>
     </div>
 
     <!-- 操作 -->
     <div class="action-box">
       <div class="emoji-btn">
-        <svg-icon icon-name="expression"></svg-icon>
-        <span>表情</span>
+        <svg-icon icon-name="expression">表情</svg-icon>
       </div>
       <div class="image-btn">
-        <svg-icon icon-name="images"></svg-icon>
-        <span>图片</span>
+        <svg-icon icon-name="images">图片</svg-icon>
       </div>
       <div class="submit">
         <span>Ctrl + Enter</span>
@@ -32,24 +28,23 @@
 </template>
 
 <script lang="ts" setup name="CommentBox">
+import { ElMessage } from "element-plus";
 import { ref } from "vue";
-
-const props = defineProps({
-  comment: {
-    type: Object,
-    default: () => {
-      return {};
-    }
-  }
+withDefaults(defineProps<{ placeholder?: string }>(), {
+  // placeholder: "输入评论（Enter换行，Ctrl + Enter发送）"
+  placeholder: "输入评论内容"
 });
-const emits = defineEmits(["postComment"]);
-
+const emits = defineEmits<{
+  postComment: [content: string];
+}>();
 let contentRef = ref<HTMLDivElement>();
 /**
  * 发表评论
  */
 const postComment = () => {
-  console.log(props.comment);
+  if (!contentRef.value?.innerText) {
+    return ElMessage.warning("评论内容不能为空");
+  }
 
   emits("postComment", contentRef.value?.innerText);
   if (contentRef.value) {
@@ -60,26 +55,41 @@ const postComment = () => {
 
 <style lang="scss" scoped>
 .comment-box {
+  .input-box {
+    background: #f2f3f5;
+    border: 1px solid transparent;
+    padding: 8px 12px;
+    border-radius: 5px;
+    &.focused {
+      border-color: #1e80ff;
+    }
+
+    // 输入框
+    .content-input {
+      position: relative;
+      color: #252933;
+      outline: none;
+      min-height: 64px;
+      box-sizing: border-box;
+      line-height: 22px;
+      font-size: 14px;
+      resize: both;
+      &:empty::before {
+        // 将元素的placeholder属性的值作为内容插入
+        content: attr(placeholder);
+        color: #8a919f;
+      }
+    }
+  }
   .action-box {
-    display: flex;
-    align-items: center;
+    @include flex($align: center);
+
+    column-gap: 10px;
     margin-top: 8px;
     .emoji-btn,
     .image-btn {
-      display: flex;
-      align-items: center;
-      position: relative;
       cursor: pointer;
       color: #515767;
-      .svg-icon {
-        margin-right: 4px;
-      }
-      span {
-        font-size: 12px;
-      }
-    }
-    .image-btn {
-      margin-left: 24px;
     }
     .submit {
       margin-left: auto;
@@ -91,7 +101,6 @@ const postComment = () => {
         margin-right: 16px;
       }
       button {
-        margin-left: auto;
         width: 92px;
         text-align: center;
         font-size: 14px;
@@ -103,32 +112,6 @@ const postComment = () => {
         padding: 0;
         cursor: pointer;
       }
-    }
-  }
-}
-.input-box {
-  background: #f2f3f5;
-  border: 1px solid transparent;
-  padding: 8px 12px;
-  border-radius: 5px;
-  &.focused {
-    border-color: #1e80ff;
-  }
-
-  // 输入框
-  .content-input {
-    position: relative;
-    color: #252933;
-    outline: none;
-    min-height: 64px;
-    box-sizing: border-box;
-    line-height: 22px;
-    font-size: 14px;
-    resize: both;
-    &:empty::before {
-      // 将元素的placeholder属性的值作为内容插入
-      content: attr(placeholder);
-      color: #8a919f;
     }
   }
 }

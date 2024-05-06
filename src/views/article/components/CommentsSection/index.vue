@@ -32,26 +32,39 @@
             <CommentContent :content="item.content" :label-id="'peak' + item.id" />
             <!-- 点赞 | 回复 -->
             <div class="action-box">
-              <div class="item" :class="{ active: !!item.user_liked }">
+              <div
+                class="item"
+                :class="{ active: !!item.user_liked }"
+                @click="articleCommentLike(item)"
+              >
                 <svg-icon v-if="item.user_liked" icon-name="like-filled" />
                 <svg-icon v-else icon-name="like-outlined" />
-                {{ item.likes_count ? item.likes_count : "点赞" }}
+                {{ item.like_count ? item.like_count : "点赞" }}
               </div>
               <div
                 class="item"
                 :class="{ 'is-open-box': item.isOpenBox }"
                 @click="clickComment(item)"
               >
-                <svg-icon icon-name="comment" />
-                {{ item.isOpenBox ? "取消回复" : "回复" }}
+                <svg-icon icon-name="comment">
+                  {{ item.isOpenBox ? "取消回复" : "回复" }}
+                </svg-icon>
               </div>
+
               <!-- 删除按钮, 本人才显示 -->
-              <div
-                class="del"
-                v-if="item.user_id == user_id"
-                @click="deleteComment(item.id)"
-              >
-                删除
+              <div class="item" v-if="item.user_id == user_id">
+                <el-popconfirm
+                  confirm-button-text="是"
+                  cancel-button-text="否"
+                  icon-color="#ff5132"
+                  confirm-button-type="danger"
+                  title="确定删除吗?"
+                  @confirm="deleteComment(item.id)"
+                >
+                  <template #reference>
+                    <svg-icon icon-name="delete-four">删除</svg-icon>
+                  </template>
+                </el-popconfirm>
               </div>
             </div>
 
@@ -64,63 +77,74 @@
           </div>
           <!-- 这沿途的风景或许不是那么精彩,但当我们回首往昔时,便是峥嵘岁月! -->
           <!-- 一级下的二级评论容器 -->
-          <div class="sub-comment-wrapper" v-show="item.children.length != 0">
-            <div class="sub-comment-list">
-              <div class="sub-comment" v-for="child in item.children" :key="child.id">
-                <!-- 二级头像-->
-                <div class="user-popover">
-                  <img :src="child.avatar" alt="" />
-                </div>
-                <div class="content-box">
-                  <div class="content-wrapper">
-                    <!-- 二级用户名和时间 -->
-                    <div class="user-box">
-                      <div class="user-popover">{{ child.nickname }}</div>
+          <div class="sub-comment-list">
+            <div class="sub-comment" v-for="child in item.children" :key="child.id">
+              <!-- 二级头像-->
+              <div class="user-popover">
+                <img :src="child.avatar" alt="" />
+              </div>
+              <div class="content-box">
+                <div class="content-wrapper">
+                  <!-- 二级用户名和时间 -->
+                  <div class="user-box">
+                    <div class="user-popover">
+                      {{ child.nickname }}
                       <div class="rely-box" v-if="child.reply_nickname">
                         <span>回复</span>
-                        <div class="user-popover">
-                          {{ child.reply_nickname }}
-                        </div>
-                      </div>
-                      <div class="time">{{ child.create_time }}</div>
-                    </div>
-                    <CommentContent
-                      :content="child.content"
-                      :label-id="child.id + ''"
-                      bg-color="#f7f8fa"
-                    />
-                    <!-- 点赞 , 回复 -->
-                    <div class="action-box">
-                      <div class="item" :class="{ active: !!child.user_liked }">
-                        <svg-icon v-if="child.user_liked" icon-name="like-filled" />
-                        <svg-icon v-else icon-name="like-outlined" />
-                        {{ child.likes_count ? child.likes_count : "点赞" }}
-                      </div>
-                      <div
-                        class="item"
-                        :class="{ 'is-open-box': item.isOpenBox }"
-                        @click="clickComment(child)"
-                      >
-                        <svg-icon icon-name="comment" />
-                        {{ child.isOpenBox ? "取消回复" : "回复" }}
-                      </div>
-                      <!-- 删除按钮, 本人才显示 -->
-                      <div
-                        class="sub-del"
-                        v-if="child.user_id == user_id"
-                        @click="deleteComment(child.id)"
-                      >
-                        删除
+                        <!-- <div class="user-popover"></div> -->
+                        {{ child.reply_nickname }}
                       </div>
                     </div>
-
-                    <!-- 评论框 -->
-                    <CommentBox
-                      v-if="child.isOpenBox"
-                      :comment="child"
-                      @post-comment="postComment"
-                    />
+                    <div class="time">{{ child.create_time }}</div>
                   </div>
+                  <CommentContent
+                    :content="child.content"
+                    :label-id="child.id + ''"
+                    bg-color="#f7f8fa"
+                  />
+                  <!-- 点赞 , 回复 -->
+                  <div class="action-box">
+                    <div
+                      class="item"
+                      :class="{ active: !!child.user_liked }"
+                      @click="articleCommentLike(child)"
+                    >
+                      <svg-icon v-if="child.user_liked" icon-name="like-filled" />
+                      <svg-icon v-else icon-name="like-outlined" />
+                      {{ child.like_count ? child.like_count : "点赞" }}
+                    </div>
+                    <div
+                      class="item"
+                      :class="{ 'is-open-box': item.isOpenBox }"
+                      @click="clickComment(child)"
+                    >
+                      <svg-icon icon-name="comment">
+                        {{ child.isOpenBox ? "取消回复" : "回复" }}
+                      </svg-icon>
+                    </div>
+                    <!-- 删除按钮, 本人才显示 -->
+                    <div class="item" v-if="child.user_id == user_id">
+                      <el-popconfirm
+                        confirm-button-text="是"
+                        cancel-button-text="否"
+                        icon-color="#ff5132"
+                        confirm-button-type="danger"
+                        title="确定删除吗?"
+                        @confirm="deleteComment(child.id)"
+                      >
+                        <template #reference>
+                          <svg-icon icon-name="delete-four">删除</svg-icon>
+                        </template>
+                      </el-popconfirm>
+                    </div>
+                  </div>
+
+                  <!-- 评论框 -->
+                  <CommentBox
+                    v-if="child.isOpenBox"
+                    :comment="child"
+                    @post-comment="postComment"
+                  />
                 </div>
               </div>
             </div>
@@ -151,6 +175,7 @@ import {
   reqSelectArticleComment,
   reqInsertArticleComment,
   reqDeleteArticleComment,
+  reqArticleCommentLike,
   type Article
 } from "@/api/article";
 import { useUserStore } from "@/store/modules/user";
@@ -164,9 +189,6 @@ const route = useRoute();
 const article_id = computed((): number => {
   return Number(route.params.article_id);
 });
-// const url = computed(() => {
-//   return "http://119.91.22.164:8085/OASystem/gaoding-koutu.png";
-// });
 
 let commentList = ref<Article.ArticleComment[]>(); // 评论列表
 /**
@@ -240,30 +262,44 @@ const deleteComment = async (id: number) => {
     getComment();
   }
 };
+
+/**
+ * 点赞
+ */
+const articleCommentLike = async (comment: Article.ArticleComment) => {
+  try {
+    const { article_id, id } = comment;
+    let result = await reqArticleCommentLike({ article_id, comment_id: id });
+    comment.user_liked = result.data.user_liked;
+    comment.like_count = result.data.like_count;
+  } catch (error) {
+    console.log(error);
+  }
+};
 </script>
 
 <style lang="scss" scoped>
 // 讨论区
 .forum-container {
   background-color: #ffffff;
-  padding: 30px;
-
-  // 评论区列表
+  padding-top: 30px; // 评论区列表
   .comment-list {
+    @include flex($direction: column);
+
+    row-gap: 16px;
     background-color: #ffffff;
     color: #000000;
     font-family: -apple-system, system-ui, "Segoe UI", Roboto, Ubuntu, Cantarell,
       "Noto Sans", sans-serif, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC",
       "Hiragino Sans GB", "Microsoft YaHei", Arial !important;
-    padding-bottom: 50px;
     font-size: 12px;
     .active,
     .is-open-box {
       color: #1e80ff !important;
     }
     .comment {
+      width: 100%;
       display: flex;
-      padding: 16px 0;
       border-bottom: 1px solid rgb(255 255 255 / 25%);
       &:hover .del {
         display: block !important;
@@ -288,167 +324,121 @@ const deleteComment = async (id: number) => {
         .comment-main {
           // 一级用户名和时间
           .user-box {
-            display: flex;
-            height: 24px;
-            line-height: 24px;
+            @include flex($justify: space-between);
 
-            // justify-content: space-between;
+            height: 24px;
             .user-popover {
               font-weight: 500;
               font-size: 15px;
-              max-width: 90px;
             }
             .time {
-              margin-left: auto;
               font-size: 12px;
               color: #8a919f;
             }
           }
-
-          // 一级评论内容
-          // .content {
-          //   display: -webkit-box;
-          //   overflow: hidden;
-          //   text-overflow: ellipsis;
-          //   -webkit-box-orient: vertical;
-          //   -webkit-line-clamp: 6;
-          //   font-weight: 400;
-          //   font-size: 14px;
-          //   margin-top: 8px;
-          //   // 展开后的
-          //   &.extend {
-          //     -webkit-line-clamp: initial;
-          //   }
-          // }
-          // // 内容的展开收起
-          // .limit-btn {
-          //   margin-top: 8px;
-          //   cursor: pointer;
-          //   font-size: 14px;
-          //   line-height: 22px;
-          //   color: #1e80ff;
-          // }
           .action-box {
             position: relative;
-            display: flex;
-            align-items: center;
-            margin-top: 10px;
+
+            @include flex($align: center);
+
+            column-gap: 10px;
             .item {
               display: flex;
               align-items: center;
-              margin-right: 16px;
-              line-height: 22px;
               font-size: 14px;
               color: #8a919f;
               cursor: pointer;
               &:hover {
                 color: #1e80ff;
               }
-              .svg-icon {
-                margin-right: 2px;
-                font-size: 16px;
-              }
-            }
-            .del {
-              display: none;
-              margin-left: auto;
-              color: #ff5132;
-              cursor: pointer;
             }
           }
         }
 
         // 一级下的二级评论
-        .sub-comment-wrapper {
+        // .sub-comment-wrapper {
+        //   background-color: #f7f8fa;
+        //   border-radius: 8px;
+        // }
+        .sub-comment-list {
+          margin-top: 16px;
           background-color: #f7f8fa;
+          padding: 16px;
           border-radius: 8px;
-          .sub-comment-list {
-            margin-top: 16px;
-            padding: 16px;
-            .sub-comment {
-              display: flex;
-              width: calc(100% - 10px);
-              border-bottom: 1px solid rgb(255 255 255 / 25%);
-              margin-bottom: 24px;
-              &:hover {
-                .sub-del {
-                  display: block !important;
-                }
+          .sub-comment {
+            display: flex;
+            width: calc(100% - 10px);
+            border-bottom: 1px solid rgb(255 255 255 / 25%);
+            margin-bottom: 24px;
+            &:hover {
+              .sub-del {
+                display: block !important;
               }
+            }
 
-              // 二级头像
-              & > .user-popover {
-                flex-shrink: 0;
-                img {
-                  width: 30px;
-                  height: 30px;
-                  border-radius: 50%;
-                }
+            // 二级头像
+            & > .user-popover {
+              flex-shrink: 0;
+              img {
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
               }
-              .content-box {
-                // display: flex;
-                width: 100%;
-                .content-wrapper {
-                  // 二级用户名和时间
-                  .user-box {
-                    display: flex;
-                    height: 30px;
-                    line-height: 30px;
-                    .user-popover {
-                      height: 100%;
-                      font-size: 15px;
-                    }
+            }
+            .content-box {
+              width: 100%;
+              .content-wrapper {
+                // 二级用户名和时间
+                .user-box {
+                  @include flex($justify: space-between, $align: center);
+
+                  height: 30px;
+                  .user-popover {
+                    @include flex($align: center);
+
+                    font-size: 15px;
                     .rely-box {
-                      display: flex;
-                      align-items: center;
+                      @include flex($align: center);
                       > span {
-                        padding: 0 12px;
+                        margin: 0 4px;
                         font-size: 14px;
                         color: #8a919f;
                       }
                     }
-                    .time {
-                      margin-left: auto;
-                      font-size: 12px;
-                      color: #8a919f;
-                      height: 100%;
-                    }
                   }
-                  .action-box {
-                    position: relative;
+                  .time {
+                    font-size: 12px;
+                    color: #8a919f;
+                  }
+                }
+                .action-box {
+                  position: relative;
+                  display: flex;
+                  align-items: center;
+                  margin-top: 10px;
+                  .item {
                     display: flex;
                     align-items: center;
-                    margin-top: 10px;
-                    .item {
-                      display: flex;
-                      align-items: center;
-                      margin-right: 16px;
-                      line-height: 22px;
-                      font-size: 14px;
-                      color: #8a919f;
-                      cursor: pointer;
-                      &:hover {
-                        color: #1e80ff;
-                      }
-                      .svg-icon {
-                        margin-right: 2px;
-                        font-size: 16px;
-                      }
+                    margin-right: 16px;
+                    line-height: 22px;
+                    font-size: 14px;
+                    color: #8a919f;
+                    cursor: pointer;
+                    &:hover {
+                      color: #1e80ff;
                     }
-                    .sub-del {
-                      display: none;
-                      margin-left: auto;
-                      color: #ff5132;
-                      cursor: pointer;
+                    .svg-icon {
+                      margin-right: 2px;
+                      font-size: 16px;
                     }
                   }
                 }
               }
             }
-
-            // > div {
-            // }
           }
+
+          // > div {
+          // }
         }
       }
     }

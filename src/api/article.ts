@@ -6,6 +6,7 @@ import request from "@/utils/request";
 const prefix = "/blog";
 
 export namespace Article {
+  // 文章
   export interface ArticleItem {
     article_id: number;
     article_title: string;
@@ -35,7 +36,7 @@ export namespace Article {
     views: number;
   }
 
-  // 获取文章列表 参数
+  // 查询文章列表 请求参数
   export interface ReqSelectArticleList extends ReqPage {
     status: 2; // 只能展示已通过的
     searchKey: string;
@@ -43,6 +44,7 @@ export namespace Article {
     tag_ids?: string;
   }
 
+  // 文章评论
   interface Comment {
     id: number;
     article_id: number;
@@ -56,24 +58,17 @@ export namespace Article {
     reply_user_id: number;
     reply_nickname: string;
     reply_avatar: string;
-    likes_count: number;
+    like_count: number;
     user_liked: number;
     isOpenBox?: boolean;
   }
-
   export interface ArticleComment extends Comment {
-    children: Comment[];
+    children?: Comment[];
   }
 
   export type ReqInsertArticleComment = Omit<
     Comment,
-    | "id"
-    | "user_id"
-    | "nickname"
-    | "avatar"
-    | "create_time"
-    | "likes_count"
-    | "user_liked"
+    "id" | "user_id" | "nickname" | "avatar" | "create_time" | "like_count" | "user_liked"
   > & {
     reply_id?: number;
     reply_user_id?: number;
@@ -106,6 +101,16 @@ export function reqSelectArticle(params: { article_id: number }) {
 }
 
 /**
+ * @description 文章 点赞或取消
+ */
+export function reqArticleLike({ article_id }: { article_id: number }) {
+  return request({
+    url: `${prefix}/article/like/${article_id}`,
+    method: "patch"
+  });
+}
+
+/**
  * @description 获取文章的评论
  */
 export function reqSelectArticleComment(params: { article_id: number }) {
@@ -133,16 +138,6 @@ export function reqDeleteArticleComment(params: { id: number }) {
   return request({
     url: `${prefix}/article/comment/${params.id}`,
     method: "delete"
-  });
-}
-
-/**
- * @description 文章 点赞或取消
- */
-export function reqArticleLike({ article_id }: { article_id: number }) {
-  return request({
-    url: `${prefix}/article/like/${article_id}`,
-    method: "patch"
   });
 }
 

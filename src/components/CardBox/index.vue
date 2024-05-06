@@ -17,11 +17,11 @@
 <script lang="ts" setup>
 defineOptions({
   name: "CardBox"
-  // inheritAttrs: false
+  // inheritAttrs: true
 });
-defineProps<{
-  title?: string;
-}>();
+withDefaults(defineProps<{ title?: string }>(), {
+  title: ""
+});
 </script>
 
 <style lang="scss" scoped>

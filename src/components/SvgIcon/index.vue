@@ -1,67 +1,44 @@
 <template>
-  <!--自定义 url图标 -->
-  <div
-    v-if="is_Url_or_svg"
-    :style="styleExternalIcon"
-    class="svg-external-icon svg-icon"
-  />
-  <svg v-else aria-hidden="true" :class="className">
-    <use :xlink:href="symbolId" :fill="color"></use>
-  </svg>
+  <div class="svg-icon-box">
+    <svg class="svg-icon" :style="iconStyle" aria-hidden="true">
+      <use :xlink:href="symbolId" />
+    </svg>
+    <i>
+      <slot></slot>
+    </i>
+  </div>
 </template>
 
 <script setup lang="ts" name="SvgIcon">
-import { computed } from "vue";
-import { isExternal } from "@/utils/validate.ts";
-export interface SvgProps {
-  prefix?: string;
-  iconName: string;
-  color?: string;
-  className?: string;
+import { computed, CSSProperties } from "vue";
+
+interface SvgProps {
+  iconName: string; // 图标的名称 ==> 必传
+  prefix?: string; // 图标的前缀 ==> 非必传（默认为"icon"）
+  iconStyle?: CSSProperties; // 图标的样式 ==> 非必传
+  color?: string; // 图标的颜色 ==> 非必传
 }
+
 const props = withDefaults(defineProps<SvgProps>(), {
   prefix: "icon",
   color: "",
-  className: ""
+  iconStyle: () => ({})
 });
 
-// 拼接class类样式
-const className = computed(() => {
-  // console.log(this.className);
-  if (props.className) {
-    return "svg-icon " + props.className;
-  } else {
-    return "svg-icon";
-  }
-});
-
-// 判断图标类型
-const is_Url_or_svg = computed(() => isExternal(props.iconName));
-
-// url图标
-const styleExternalIcon = computed(() => {
-  return {
-    mask: `url(${props.iconName}) no-repeat 50% 50%`,
-    "-webkit-mask": `url(${props.iconName}) no-repeat 50% 50%`
-  };
-});
-
-// 拼接完整 svg图标
 const symbolId = computed(() => `#${props.prefix}-${props.iconName}`);
 </script>
+<style lang="scss" scoped>
+.svg-icon-box {
+  @include flex($align: center);
 
-<style scoped>
-.svg-icon {
-  width: 1em;
-  height: 1em;
-  fill: currentColor;
-
-  /* vertical-align: -0.6em; */
-  overflow: hidden;
-}
-.svg-external-icon {
-  background-color: currentColor;
-  mask-size: cover !important;
-  display: inline-block;
+  column-gap: 4px;
+  .svg-icon {
+    width: 1.2em;
+    height: 1.2em;
+    fill: currentColor;
+  }
+  i {
+    font-style: normal;
+  }
 }
 </style>

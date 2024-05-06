@@ -46,15 +46,18 @@
     </template>
   </Banner>
   <div class="article-container">
-    <div class="content">
-      <MdPreview
-        editor-id="article-details"
-        :model-value="article?.article_content"
-        @on-get-catalog="onGetCatalog"
-      />
+    <div class="article-content">
+      <CardBox>
+        <MdPreview
+          editor-id="article-details"
+          :model-value="article?.article_content"
+          @on-get-catalog="onGetCatalog"
+        />
+      </CardBox>
       <!-- <MdCatalog editor-id="article-details" :scroll-element="scrollElement" /> -->
-
-      <CommentsSection />
+      <CardBox title="评论区" style="margin-top: 20px">
+        <CommentsSection />
+      </CardBox>
     </div>
 
     <LayoutAside>
@@ -75,6 +78,7 @@ import LayoutAside from "@/layout/components/Aside/index.vue";
 import ArticleCatalogue from "@/layout/components/Aside/ArticleCatalogue.vue";
 import BoxUser from "@/layout/components/Aside/BoxUser.vue";
 import CommentsSection from "./components/CommentsSection/index.vue";
+import CardBox from "@/components/CardBox/index.vue";
 
 import { onMounted, computed, ref } from "vue";
 import { useRoute } from "vue-router";
@@ -100,7 +104,7 @@ async function selectArticle() {
   try {
     let result = await reqSelectArticle({ article_id: article_id.value });
     article.value = result.data;
-    console.log(result);
+    // console.log(result);
   } catch (error) {
     console.log(error);
   }
@@ -112,7 +116,7 @@ const onGetCatalog = (list: []) => {
 };
 
 /**
- * @description
+ * @description 文章点赞
  */
 const clickLikes = async (article: Article.ArticleItem) => {
   try {
@@ -190,11 +194,17 @@ const clickLikes = async (article: Article.ArticleItem) => {
   }
 }
 .article-container {
-  .content {
+  :deep(.article-content) {
     width: 100%;
-    padding: 20px;
-    border-radius: 10px;
-    background-color: #ffffff;
+    #article-details {
+      #article-details-preview-wrapper {
+        padding: 0;
+      }
+    }
+
+    // padding: 20px;
+    // border-radius: 10px;
+    // background-color: #ffffff;
   }
 }
 </style>
