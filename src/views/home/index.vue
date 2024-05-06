@@ -22,6 +22,16 @@
     <!-- 侧边栏 -->
     <LayoutAside>
       <BoxUser />
+      <CardBox style="margin: 20px 0">
+        <div class="search">
+          <el-input
+            v-model.trim="queryParams.searchKey"
+            placeholder="搜索文章"
+            clearable
+            @input="selectArticleList"
+          />
+        </div>
+      </CardBox>
       <CategoryList
         v-model:cateId="queryParams.cate_id"
         @change-category="selectArticleList"
@@ -116,6 +126,22 @@ const changeTag = (tagIds: number[]) => {
         margin-top: 20px;
         background-color: transparent;
       }
+    }
+  }
+  :deep(.search) {
+    @include flex(row, flex-start, center);
+    > span {
+      flex: 1;
+    }
+    .el-input {
+      flex: 3;
+    }
+    .el-input__wrapper,
+    input {
+      border: 0 !important;
+
+      // box-shadow: 0 0 0 0 rgb(0 0 0 / 10%) !important;
+      background-color: transparent !important;
     }
   }
 }

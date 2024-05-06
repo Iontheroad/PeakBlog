@@ -1,6 +1,8 @@
 <template>
-  <section class="category-list">
-    <label class="title"><SvgIcon icon-name="category" />分类</label>
+  <CardBox class="category-list">
+    <template #title>
+      <label class="title"><SvgIcon icon-name="category" />分类</label>
+    </template>
     <div class="category">
       <div
         v-for="item in cateList"
@@ -15,7 +17,7 @@
         <strong>{{ item.article_count }}</strong>
       </div>
     </div>
-  </section>
+  </CardBox>
 </template>
 
 <script lang="ts" setup>
@@ -57,9 +59,6 @@ const clickCategory = (cate: Category) => {
 
 <style lang="scss" scoped>
 .category-list {
-  padding: 20px;
-  border-radius: 10px;
-  background-color: #ffffff;
   .title {
     display: flex;
     align-items: center;

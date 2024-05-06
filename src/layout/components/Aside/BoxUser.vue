@@ -1,18 +1,21 @@
 <template>
-  <div class="box-user">
-    <div class="login-status">
-      <span>{{ isLogin ? "已登录" : "未登录" }}</span>
-      <el-text v-if="isLogin" type="danger" style="cursor: pointer" @click="logout">
-        退出
-      </el-text>
-      <el-text v-else type="primary" @click="login" style="cursor: pointer">登陆</el-text>
-    </div>
+  <CardBox class="box-user">
+    <template #title>
+      <div class="login-status">
+        <span>{{ isLogin ? "已登录" : "未登录" }}</span>
+        <el-text v-if="isLogin" type="danger" style="cursor: pointer" @click="logout">
+          退出
+        </el-text>
+        <el-text v-else type="primary" @click="login" style="cursor: pointer">
+          登陆
+        </el-text>
+      </div>
+    </template>
     <div class="user-info" v-if="isLogin">
       <img :src="userInfo?.avatar" alt="" />
       <span class="user-name">{{ userInfo?.nickname }}</span>
     </div>
-    <!-- <div class="action-btn"></div> -->
-  </div>
+  </CardBox>
 </template>
 
 <script lang="ts" setup name="BoxUser">
@@ -65,13 +68,6 @@ const logout = async () => {
 
 <style lang="scss" scoped>
 .box-user {
-  @include flex(column, center, flex-start);
-
-  margin-bottom: 1rem;
-  margin-top: 0;
-  padding: 1.3rem;
-  background-color: #ffffff;
-  border-radius: $border-radius;
   .login-status {
     @include flex(row, space-between, center);
 

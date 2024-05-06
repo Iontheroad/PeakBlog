@@ -2,7 +2,7 @@
   <div class="card-box">
     <div class="title">
       <slot name="title">
-        <h5>{{ title }}</h5>
+        <span>{{ title }}</span>
       </slot>
     </div>
 

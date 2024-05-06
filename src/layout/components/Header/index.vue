@@ -15,16 +15,13 @@
       </nav>
     </div>
     <div class="header-right">
-      <div class="search">
-        <el-input v-model.trim="searchKey" placeholder="搜索文章" />
-      </div>
       <!-- <div class="avatar">头像</div> -->
     </div>
   </header>
 </template>
 
 <script lang="ts" setup name="Header">
-import { reactive, computed, watch, ref } from "vue";
+import { reactive, computed } from "vue";
 import { usePageScroll } from "@/hooks/usePageScroll";
 import { useRouter, useRoute } from "vue-router";
 const router = useRouter();
@@ -45,9 +42,6 @@ const toPath = (e: any) => {
   if (!_path) return;
   router.push(_path);
 };
-
-let searchKey = ref("");
-watch(searchKey, () => {});
 </script>
 
 <style lang="scss" scoped>
@@ -91,5 +85,8 @@ watch(searchKey, () => {});
       }
     }
   }
+
+  // .header-right {
+  // }
 }
 </style>
