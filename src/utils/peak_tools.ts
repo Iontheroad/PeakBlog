@@ -86,3 +86,82 @@ export function formatPast(date: string, type = "default", zeroFillFlag = true) 
 // console.log(formatPast("2023/5/10 11:32:01", "年月日")); // 2023年05月10日
 // console.log(formatPast("2023/6/25 11:32:01", "月日", false)); // 6月25日
 // console.log(formatPast("2023/8/08 11:32:01", "年")); // 2023年
+
+type Procedure = (...args: any[]) => void;
+/**
+ * 防抖
+ * @param {function} fun -- 执行的回调函数(vue2该函数不能是箭头函数)
+ * @param {number} delay -- 延迟时间(默认500ms)
+ * @param {boolean} isImmediate -- 是否首次是否立即执行一下(默认true)
+ */
+export function debounce<T extends Procedure>(
+  fun: T,
+  delay: number = 500,
+  isImmediate: boolean = true
+): (...args: Parameters<T>) => void {
+  let timer: ReturnType<typeof setTimeout> | null = null; // 定时器
+  let immediateTimer: ReturnType<typeof setTimeout> | null = null; // 继续首次触发的定时器
+  let _isImmediate = isImmediate; //  第一次触发是否立即
+  // vue2返回的函数不能是箭头函数
+  return function (this: ThisParameterType<T>, ...args: Parameters<T>) {
+    // 规定时间频繁触发就清除上一次的定时器
+    timer && clearTimeout(timer);
+    immediateTimer && clearTimeout(immediateTimer);
+
+    // 首次触发立即执行一下(如果后续紧跟继续触发,就走定时器)
+    if (_isImmediate) {
+      fun.call(this, ...args);
+      _isImmediate = false; // 首次执行完成把 _isImmediate 为false
+      timer = null;
+
+      // 如果点击一次后在delay时间内没有继续点击,下次点击继续首次触发
+      immediateTimer = setTimeout(() => {
+        _isImmediate = isImmediate; // 继续开启首次立即执行
+        immediateTimer = null;
+      }, delay);
+    } else {
+      timer = setTimeout(() => {
+        fun.call(this, ...args);
+        _isImmediate = isImmediate; // 定时器执行完毕,继续(开启|关闭)首次立即执行
+        timer = null; // 执行完毕置空
+        immediateTimer = null;
+      }, delay);
+    }
+  };
+}
+
+/**
+ * 节流
+ * @param {function} fun -- 执行的回调函数(vue2该函数不能是箭头函数)
+ * @param {number} delay -- 延迟时间(默认500ms)
+ * @param {boolean} immediate -- 是否立即执行
+ * @returns
+ */
+export function throttle<T extends Procedure>(
+  fun: T,
+  delay: number = 500,
+  immediate: boolean = true
+): (...args: Parameters<T>) => void {
+  let previousTimeStamp: number = 0; // 上一次点击的时间戳
+  let timer: ReturnType<typeof setTimeout> | null = null; // 定时器
+  // vue2返回的函数不能是箭头函数
+  return function (this: ThisParameterType<T>, ...args: Parameters<T>) {
+    // 点击后立即执行,等待指定时间以后才能再次点击
+    if (immediate) {
+      let nowTimeStamp = +new Date(); // 获取当前点击的时间戳
+      // 就上次点击相隔时间大于 delay 就执行
+      if (nowTimeStamp - previousTimeStamp > delay) {
+        fun.call(this, ...args);
+        previousTimeStamp = nowTimeStamp; // 并记录点击 触发的时间
+      }
+    } else {
+      // 点击后等待指定的时间后才执行且才能再次点击
+      if (!timer) {
+        timer = setTimeout(() => {
+          fun.call(this, ...args);
+          timer = null; // 定时器结束后赋值为null,方便下次执行
+        }, delay);
+      }
+    }
+  };
+}

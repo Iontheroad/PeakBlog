@@ -15,6 +15,7 @@
       </nav>
     </div>
     <div class="header-right">
+      <SearchBox />
       <!-- <div class="avatar">头像</div> -->
     </div>
   </header>
@@ -24,6 +25,7 @@
 import { reactive, computed } from "vue";
 import { usePageScroll } from "@/hooks/usePageScroll";
 import { useRouter, useRoute } from "vue-router";
+import SearchBox from "@/layout/components/Header/SearchBox.vue";
 const router = useRouter();
 const route = useRoute();
 const { isPageScroll } = usePageScroll(); // 页面滚动

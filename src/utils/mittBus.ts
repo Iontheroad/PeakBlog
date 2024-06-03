@@ -1,5 +1,8 @@
-import mitt from "mitt";
+import mitt, { Emitter } from "mitt";
 
-const mittBus = mitt();
+type MittType = {
+  searchArticle: string;
+};
+const mittBus: Emitter<MittType> = mitt<MittType>();
 
 export default mittBus;

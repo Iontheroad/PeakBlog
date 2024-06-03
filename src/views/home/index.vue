@@ -13,6 +13,7 @@
         <Pagination
           v-show="total"
           :total="total"
+          layout="total, prev, pager, next, jumper"
           v-model:current-page="queryParams.currentPage"
           v-model:page-size="queryParams.pageSize"
           @change="selectArticleList"
@@ -22,16 +23,7 @@
     <!-- 侧边栏 -->
     <LayoutAside>
       <BoxUser />
-      <CardBox style="margin: 20px 0">
-        <div class="search">
-          <el-input
-            v-model.trim="queryParams.searchKey"
-            placeholder="搜索文章"
-            clearable
-            @input="selectArticleList"
-          />
-        </div>
-      </CardBox>
+      <div style="height: 10px"></div>
       <CategoryList
         v-model:cateId="queryParams.cate_id"
         @change-category="selectArticleList"
@@ -52,6 +44,7 @@ import Pagination from "@/components/Pagination/index.vue";
 import ArticleItem from "./ArticleItem.vue";
 import TagsList from "./TagsList.vue";
 import CategoryList from "./CategoryList.vue";
+import mittBus from "@/utils/mittBus";
 
 let total = ref(0);
 let queryParams = ref<Article.ReqSelectArticleList>({
@@ -61,6 +54,10 @@ let queryParams = ref<Article.ReqSelectArticleList>({
   cate_id: undefined,
   status: 2, // 1: 未通过 2: 通过 3: 待审核  用户端只能获取通过的
   searchKey: ""
+});
+mittBus.on("searchArticle", (value: string) => {
+  queryParams.value.searchKey = value;
+  selectArticleList();
 });
 
 onMounted(() => {
