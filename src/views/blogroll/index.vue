@@ -50,11 +50,10 @@
     <DialogTemplate
       v-model:visible="dialogVisible"
       title="申请友链"
-      style="border-radius: 10px"
+      style="border-radius: 10px; max-width: 600px; min-width: 200px"
     >
       <el-form
         ref="ruleFormRef"
-        style="max-width: 600px"
         :model="ruleForm"
         :rules="rules"
         label-width="auto"
@@ -297,6 +296,7 @@ const resetForm = (formEl: FormInstance | undefined) => {
             display: -webkit-box;
 
             /* 设置显示的行数 */
+            line-clamp: 2;
             -webkit-line-clamp: 2;
 
             /* 在其中的排列方式为垂直的 */
