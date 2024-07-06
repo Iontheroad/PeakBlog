@@ -56,7 +56,7 @@
       </CardBox>
       <!-- <MdCatalog editor-id="article-details" :scroll-element="scrollElement" /> -->
       <CardBox title="评论区" style="margin-top: 20px">
-        <CommentsSection />
+        <CommentsSection :article-id="article_id" />
       </CardBox>
     </div>
 
@@ -77,7 +77,7 @@ import Banner from "@/components/Banner/index.vue";
 import LayoutAside from "@/layout/components/Aside/index.vue";
 import ArticleCatalogue from "@/layout/components/Aside/ArticleCatalogue.vue";
 import BoxUser from "@/layout/components/Aside/BoxUser.vue";
-import CommentsSection from "./components/CommentsSection/index.vue";
+import CommentsSection from "@/components/CommentsSection/index.vue";
 import CardBox from "@/components/CardBox/index.vue";
 
 import { onMounted, computed, ref } from "vue";

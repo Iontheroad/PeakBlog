@@ -9,6 +9,9 @@ declare module 'vue' {
   export interface GlobalComponents {
     Banner: typeof import('./src/components/Banner/index.vue')['default']
     CardBox: typeof import('./src/components/CardBox/index.vue')['default']
+    CommentBox: typeof import('./src/components/CommentsSection/CommentBox.vue')['default']
+    CommentContent: typeof import('./src/components/CommentsSection/CommentContent.vue')['default']
+    CommentsSection: typeof import('./src/components/CommentsSection/index.vue')['default']
     copy: typeof import('./src/components/SvgIcon/index copy.vue')['default']
     DialogTemplate: typeof import('./src/components/DialogTemplate/index.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']

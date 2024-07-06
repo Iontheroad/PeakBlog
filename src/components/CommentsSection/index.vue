@@ -156,7 +156,6 @@
   </div>
 </template>
 
-<!--https://blog.csdn.net/zLanaDelRey/article/details/100997792-->
 <script setup lang="ts">
 /*
 // 封装输入框
@@ -165,11 +164,10 @@ IDEA:
   2. 评论顺序尾部追加
 */
 defineOptions({
-  name: "Forum"
+  name: "CommentsSection"
 });
 import CommentBox from "./CommentBox.vue";
 import CommentContent from "./CommentContent.vue";
-import { useRoute } from "vue-router";
 import { ref, computed, onMounted } from "vue";
 import {
   reqSelectArticleComment,
@@ -179,15 +177,22 @@ import {
   type Article
 } from "@/api/article";
 import { useUserStore } from "@/store/modules/user";
+const props = withDefaults(
+  defineProps<{
+    articleId: number;
+  }>(),
+  {}
+);
 
 const userStore = useUserStore();
 // 当前登录的用户id
 const user_id = computed(() => {
   return userStore.userInfo?.user_id;
 });
-const route = useRoute();
+
+// 留言板 固定拿对应的文章id为 10
 const article_id = computed((): number => {
-  return Number(route.params.article_id);
+  return props.articleId;
 });
 
 let commentList = ref<Article.ArticleComment[]>(); // 评论列表
