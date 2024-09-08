@@ -5,25 +5,30 @@
       <!-- 标签筛选 -->
       <TagsList :tag-list="tagList" @change-tag="changeTag" />
       <!-- 文章列表 -->
-      <section class="article-list">
-        <ArticleItem v-for="item in articleList" :key="item.article_id" :article="item" />
+      <CardBox style="margin-top: 20px">
+        <div class="article-list">
+          <ArticleItem
+            v-for="item in articleList"
+            :key="item.article_id"
+            :article="item"
+          />
 
-        <el-empty v-show="!total" description="暂无文章" :image-size="200" />
+          <el-empty v-show="!total" description="暂无文章" :image-size="200" />
 
-        <Pagination
-          v-show="total"
-          :total="total"
-          layout="total, prev, pager, next, jumper"
-          v-model:current-page="queryParams.currentPage"
-          v-model:page-size="queryParams.pageSize"
-          @change="selectArticleList"
-        />
-      </section>
+          <Pagination
+            v-show="total"
+            :total="total"
+            layout="total, prev, pager, next, jumper"
+            v-model:current-page="queryParams.currentPage"
+            v-model:page-size="queryParams.pageSize"
+            @change="selectArticleList"
+          />
+        </div>
+      </CardBox>
     </article>
     <!-- 侧边栏 -->
     <LayoutAside>
       <BoxUser />
-      <div style="height: 10px"></div>
       <CategoryList
         v-model:cateId="queryParams.cate_id"
         @change-category="selectArticleList"
@@ -106,11 +111,7 @@ const changeTag = (tagIds: number[]) => {
       display: flex;
       flex-direction: column;
       align-items: center;
-      border-radius: 10px;
-      background-color: #ffffff;
-      margin-top: 10px;
       row-gap: 20px;
-      padding: 20px;
       transform-style: preserve-3d;
       perspective: 1000px;
     }

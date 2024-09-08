@@ -1,15 +1,17 @@
 <template>
-  <div class="article-catalogue">
-    <!-- <ul class="rounded-xl" v-if="catalogList.length !== 0">
+  <CardBox class="article-catalogue" title="目录">
+    <div>
+      <!-- <ul class="rounded-xl" v-if="catalogList.length !== 0">
       <li v-for="(item, i) in catalogList" :key="i">
         <a :href="`#${item?.text}`" :data-level="item.level" :title="item.text">
           {{ item.text }}
         </a>
       </li>
     </ul> -->
-    <!-- XXX : 文章目录后续自定义 -->
-    <MdCatalog editor-id="article-details" :scroll-element="scrollElement" />
-  </div>
+      <!-- XXX : 文章目录后续自定义 -->
+      <MdCatalog editor-id="article-details" :scroll-element="scrollElement" />
+    </div>
+  </CardBox>
 </template>
 
 <script lang="ts" setup>
@@ -23,10 +25,4 @@ mittBus.on("getCatalogue", (obj: any) => {
 });
 </script>
 
-<style lang="scss" scoped>
-.article-catalogue {
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 10px;
-}
-</style>
+<style lang="scss" scoped></style>

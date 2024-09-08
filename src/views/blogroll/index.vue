@@ -24,7 +24,7 @@
 
     <!-- 侧边栏 -->
     <LayoutAside>
-      <CardBox class="add-blogroll" title="申请友链" peak="my">
+      <CardBox class="add-blogroll" title="申请友链">
         <div class="content">
           <el-icon :size="46" @click="addBlogroll"><Plus /></el-icon>
         </div>
@@ -243,7 +243,7 @@ const resetForm = (formEl: FormInstance | undefined) => {
     ul {
       display: flex;
       flex-wrap: wrap;
-      gap: 20px 20px;
+      gap: 20px;
       width: 100%;
       list-style: none;
       li {
@@ -251,7 +251,7 @@ const resetForm = (formEl: FormInstance | undefined) => {
         height: 100px;
         background-color: #ffffff;
         background-size: 100% 100%;
-        border-radius: 10px;
+        border-radius: $border-radius;
         padding: 20px;
         box-shadow: 0 0 10px 0 rgb(0 0 0 / 10%);
 
@@ -332,7 +332,6 @@ const resetForm = (formEl: FormInstance | undefined) => {
     }
   }
   .blogroll-rule {
-    margin-top: 20px;
     ol {
       margin-top: 10px;
       margin-left: 30px;

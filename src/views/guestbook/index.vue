@@ -10,7 +10,6 @@
 
     <LayoutAside>
       <BoxUser />
-      <ArticleCatalogue />
     </LayoutAside>
   </div>
 </template>

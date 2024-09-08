@@ -21,6 +21,9 @@ aside {
   width: 300px;
   margin-left: 20px;
   .box {
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
     width: inherit;
     &.fixed-aside {
       position: fixed;

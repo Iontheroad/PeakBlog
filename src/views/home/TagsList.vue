@@ -1,21 +1,23 @@
 <template>
-  <section class="tags-list">
-    <label for=""><SvgIcon icon-name="tags" />标签</label>
-    <div class="tags" @click="clickTag">
-      <span
-        v-for="item in list"
-        :key="item.tag_id"
-        :data-tag_name="item.tag_name"
-        :data-tag_id="item.tag_id"
-        :class="{ active: tagChecked.includes(item.tag_id) }"
-      >
-        {{ item.tag_name }}
-        <strong :data-tag_name="item.tag_name" :data-tag_id="item.tag_id">{{
-          item.article_count
-        }}</strong>
-      </span>
+  <CardBox>
+    <div class="tags-list">
+      <label for=""><SvgIcon icon-name="tags" />标签</label>
+      <div class="tags" @click="clickTag">
+        <span
+          v-for="item in list"
+          :key="item.tag_id"
+          :data-tag_name="item.tag_name"
+          :data-tag_id="item.tag_id"
+          :class="{ active: tagChecked.includes(item.tag_id) }"
+        >
+          {{ item.tag_name }}
+          <strong :data-tag_name="item.tag_name" :data-tag_id="item.tag_id">{{
+            item.article_count
+          }}</strong>
+        </span>
+      </div>
     </div>
-  </section>
+  </CardBox>
 </template>
 
 <script lang="ts" setup>
@@ -58,9 +60,6 @@ const clickTag = (e: any) => {
   position: relative;
   display: flex;
   align-items: center;
-  padding: 20px;
-  border-radius: 10px;
-  background-color: #ffffff;
   label {
     display: flex;
     align-items: center;

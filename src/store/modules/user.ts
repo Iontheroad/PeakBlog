@@ -53,7 +53,11 @@ export const useUserStore = defineStore({
       this.userInfo = null;
     }
   },
-  getters: {},
+  getters: {
+    isLogin(state) {
+      return !!state?.userInfo?.user_id;
+    }
+  },
   persist: {
     enabled: true, // 开启数据存储
     strategies: [

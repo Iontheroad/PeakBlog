@@ -31,9 +31,7 @@ const userStore = useUserStore();
 const userInfo = computed(() => {
   return userStore.userInfo;
 });
-const isLogin = computed(() => {
-  return !!userInfo.value?.user_id;
-});
+const isLogin = computed(() => userStore.isLogin);
 
 /**
  * 跳转到登陆页面
