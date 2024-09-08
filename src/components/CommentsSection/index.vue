@@ -27,11 +27,11 @@
             <!-- 一级用户名和时间 -->
             <div class="user-box">
               <div class="user-popover">{{ item.nickname }}</div>
-              <div class="time">{{ item.create_time }}</div>
             </div>
             <CommentContent :content="item.content" :label-id="'peak' + item.id" />
             <!-- 点赞 | 回复 -->
             <div class="action-box">
+              <div class="time">{{ formatTimeAgo(new Date(item.create_time)) }}</div>
               <div
                 class="item"
                 :class="{ active: !!item.user_liked }"
@@ -95,7 +95,6 @@
                         {{ child.reply_nickname }}
                       </div>
                     </div>
-                    <div class="time">{{ child.create_time }}</div>
                   </div>
                   <CommentContent
                     :content="child.content"
@@ -104,6 +103,9 @@
                   />
                   <!-- 点赞 , 回复 -->
                   <div class="action-box">
+                    <div class="time">
+                      {{ formatTimeAgo(new Date(child.create_time)) }}
+                    </div>
                     <div
                       class="item"
                       :class="{ active: !!child.user_liked }"
@@ -169,6 +171,7 @@ defineOptions({
 import CommentBox from "./CommentBox.vue";
 import CommentContent from "./CommentContent.vue";
 import { ref, computed, onMounted } from "vue";
+import { formatTimeAgo } from "@/utils/peak_tools";
 import {
   reqSelectArticleComment,
   reqInsertArticleComment,
@@ -336,10 +339,6 @@ const articleCommentLike = async (comment: Article.ArticleComment) => {
               font-weight: 500;
               font-size: 15px;
             }
-            .time {
-              font-size: 12px;
-              color: #8a919f;
-            }
           }
           .action-box {
             position: relative;
@@ -347,6 +346,10 @@ const articleCommentLike = async (comment: Article.ArticleComment) => {
             @include flex($align: center);
 
             column-gap: 10px;
+            .time {
+              font-size: 12px;
+              color: #8a919f;
+            }
             .item {
               display: flex;
               align-items: center;
@@ -421,6 +424,10 @@ const articleCommentLike = async (comment: Article.ArticleComment) => {
                   display: flex;
                   align-items: center;
                   margin-top: 10px;
+                  .time {
+                    font-size: 12px;
+                    color: #8a919f;
+                  }
                   .item {
                     display: flex;
                     align-items: center;

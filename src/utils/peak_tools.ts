@@ -87,6 +87,38 @@ export function formatPast(date: string, type = "default", zeroFillFlag = true) 
 // console.log(formatPast("2023/6/25 11:32:01", "月日", false)); // 6月25日
 // console.log(formatPast("2023/8/08 11:32:01", "年")); // 2023年
 
+/**
+ * 格式化一个时间为相对于当前时间的描述
+ * @param {Date} date
+ * @returns
+ */
+export function formatTimeAgo(date: Date): string {
+  const timestamp = date.getTime();
+  if (!timestamp) return "";
+
+  const units = [
+    { limit: 30, divisor: 1, suffix: "刚刚" },
+    { limit: 60, divisor: 1, suffix: "秒前" },
+    { limit: 3600, divisor: 60, suffix: "分钟前" },
+    { limit: 86400, divisor: 3600, suffix: "小时前" },
+    { limit: 2592000, divisor: 86400, suffix: "天前" },
+    { limit: 31536000, divisor: 2592000, suffix: "月前" },
+    { limit: Infinity, divisor: 31536000, suffix: "年前" }
+  ];
+
+  const now = Date.now();
+  const secondDiff = (now - timestamp) / 1000; // 秒差
+
+  if (secondDiff < 0) return "";
+
+  for (const unit of units) {
+    if (secondDiff < unit.limit) {
+      if (unit.suffix === "刚刚") return unit.suffix;
+      return `${Math.floor(secondDiff / unit.divisor)}${unit.suffix}`;
+    }
+  }
+}
+
 type Procedure = (...args: any[]) => void;
 /**
  * 防抖
