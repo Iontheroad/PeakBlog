@@ -1,0 +1,3 @@
+# npx --no-install commitlint --edit $1
+# npx --no-install commitlint --from HEAD~1 --to HEAD --verbose
+npx --no-install commitlint --edit $1
