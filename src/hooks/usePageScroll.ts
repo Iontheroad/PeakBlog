@@ -1,11 +1,11 @@
 /**
  * 页面滚动
  */
-import { onMounted, onUnmounted, ref } from "vue";
+import { onMounted, onUnmounted, ref } from 'vue';
 
 export function usePageScroll(dom = document.documentElement) {
-  let scrollTop = ref(0); // 滚动条距离顶部的距离
-  let isPageScroll = ref(true); // 是否固定头部
+  const scrollTop = ref(0); // 滚动条距离顶部的距离
+  const isPageScroll = ref(true); // 是否固定头部
   function handleScroll() {
     scrollTop.value = dom.scrollTop;
 
@@ -16,10 +16,10 @@ export function usePageScroll(dom = document.documentElement) {
     }
   }
   onMounted(() => {
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll);
   });
   onUnmounted(() => {
-    window.removeEventListener("scroll", handleScroll);
+    window.removeEventListener('scroll', handleScroll);
   });
   handleScroll();
   return { scrollTop, isPageScroll };

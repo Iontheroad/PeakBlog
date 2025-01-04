@@ -51,7 +51,7 @@ export default [
       //     message: 'setTimeout must always be invoked with two arguments.',
       //   },
       // ],
-      // 'prefer-function-declaration': 'error',
+      // 'prefer-function-declaration': 'error', // 要求使用函数声明而不是函数表达式
       'func-style': ['error', 'declaration', { allowArrowFunctions: true }],
     },
   },
@@ -81,6 +81,14 @@ export default [
         },
       ],
       'vue/padding-line-between-blocks': ['error', 'always'], // always: 强制在块之间保留一个空行  never: 禁止块之间出现空行
+
+      '@typescript-eslint/no-unused-expressions': [
+        'error',
+        {
+          allowShortCircuit: true, // 允许短路
+          allowTernary: false, // 允许三元
+        },
+      ],
     },
   },
 
