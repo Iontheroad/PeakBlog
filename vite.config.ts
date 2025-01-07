@@ -25,7 +25,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
       preprocessorOptions: {
         scss: {
           api: 'modern-compiler', // or "modern", "legacy"
-          additionalData: `@import "@/styles/var.scss";`, // 在处理每个SCSS 文件时，都会在文件内容的最前面自动添加这一行代码，以导入 var.scss 文件
+          additionalData: `@use "@/styles/var.scss" as *;`, // 在处理每个SCSS 文件时，都会在文件内容的最前面自动添加这一行代码，以导入 var.scss 文件
         },
       },
     },
